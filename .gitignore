@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+.pnpm-store/
+
+# Build outputs
+frontend/dist/
+frontend/build/
+dist/
+build/
+
+# Python / Pytest
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+backend/.pytest_cache/
+venv/
+.venv/
+env/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

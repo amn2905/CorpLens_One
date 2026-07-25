@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #01040f;
+    color: #e2e8f0;
+    background-image:
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(37, 99, 235, 0.12) 0px, transparent 65%),
+      radial-gradient(ellipse 80% 40% at 100% 100%, rgba(59, 130, 246, 0.06) 0px, transparent 55%),
+      radial-gradient(ellipse 60% 30% at 0% 60%, rgba(29, 78, 216, 0.07) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* Sleek Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #03070f; }
+  ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+}
+
+/* ────────────────────────────────
+   GLASS PANEL — Blue-tinted dark glass
+──────────────────────────────── */
+.glass-panel {
+  background: rgba(6, 14, 34, 0.80);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  box-shadow:
+    0 20px 50px -15px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(59, 130, 246, 0.08);
+}
+
+/* ────────────────────────────────
+   GLASS CARD — Hover lift with blue glow
+──────────────────────────────── */
+.glass-card {
+  background: rgba(8, 18, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(59, 130, 246, 0.14);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(14, 28, 64, 0.85);
+  box-shadow:
+    0 14px 40px -8px rgba(37, 99, 235, 0.25),
+    0 0 0 1px rgba(59, 130, 246, 0.12);
+  transform: translateY(-2px);
+}
+
+/* ────────────────────────────────
+   GLASS INPUT
+──────────────────────────────── */
+.glass-input {
+  background: rgba(3, 9, 25, 0.90);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  color: #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.glass-input:focus {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), 0 0 20px rgba(59, 130, 246, 0.15);
+  outline: none;
+}
+
+.glass-input::placeholder { color: #4b5565; }
+
+/* ────────────────────────────────
+   GLASS BUTTON — Secondary
+──────────────────────────────── */
+.glass-btn {
+  background: rgba(37, 99, 235, 0.10);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  color: #93c5fd;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+.glass-btn:hover {
+  background: rgba(37, 99, 235, 0.22);
+  border-color: rgba(59, 130, 246, 0.55);
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(37, 99, 235, 0.30);
+}
+
+/* ────────────────────────────────
+   GLASS BUTTON — Primary (Blue)
+──────────────────────────────── */
+.glass-btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-weight: 800;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.40), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.glass-btn-primary:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.55), inset 0 1px 0 rgba(255,255,255,0.15);
+  border-color: rgba(147, 197, 253, 0.5);
+}
+
+.glass-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ────────────────────────────────
+   GLOW EFFECTS
+──────────────────────────────── */
+.glow-blue {
+  box-shadow: 0 0 30px -3px rgba(59, 130, 246, 0.40);
+}
+
+.glow-white {
+  box-shadow: 0 0 30px -3px rgba(255, 255, 255, 0.20);
+}
+
+.glow-border {
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: inset 0 0 15px rgba(37, 99, 235, 0.07);
+}
+
+/* ────────────────────────────────
+   RISK BADGE TOKENS
+──────────────────────────────── */
+.badge-mono-high {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.badge-mono-medium {
+  background: rgba(234, 179, 8, 0.10);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.30);
+}
+
+.badge-mono-low {
+  background: rgba(34, 197, 94, 0.10);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+/* ────────────────────────────────
+   ANIMATED BLUE PULSE (alerts)
+──────────────────────────────── */
+@keyframes blue-ping {
+  0% { transform: scale(1); opacity: 0.75; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.blue-ping {
+  position: relative;
+}
+.blue-ping::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(59, 130, 246, 0.45);
+  animation: blue-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ────────────────────────────────
+   ANIMATED GRADIENT ACCENT LINE
+──────────────────────────────── */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-accent {
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6, #60a5fa, #2563eb);
+  background-size: 300% 300%;
+  animation: gradient-shift 5s ease infinite;
+}
+
+/* ────────────────────────────────
+   SIDEBAR ACTIVE LEFT BAR
+──────────────────────────────── */
+.nav-active-bar {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+}
+
+/* ────────────────────────────────
+   TABLE ROWS
+──────────────────────────────── */
+tbody tr:hover {
+  background: rgba(37, 99, 235, 0.06) !important;
+}
+
+/* ────────────────────────────────
+   FOCUS VISIBLE RING
+──────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline-offset: 2px;
+}

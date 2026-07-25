@@ -1,23 +1,61 @@
-# CorpLens AI v3.0 — Security Review & Hardening Report
+# 🛡️ CorpLens AI — Security Review & Hardening Audit
 
-## Security Audit Overview
-A comprehensive security review was conducted across the CorpLens AI v3.0 codebase.
+> **Version**: 3.1 Enterprise Edition  
+> **Security Classification**: Enterprise Compliance Document  
+> **Last Audit Date**: July 2026  
 
-## Implemented Security Controls
+---
 
-### 1. Authentication & Token Management
-- **JWT Lifecycle**: HS256 algorithm with configurable expiration (`ACCESS_TOKEN_EXPIRE_MINUTES`).
-- **Refresh Tokens**: Cryptographically signed 7-day refresh tokens (`create_refresh_token`).
-- **Password Hashing**: PBKDF2-SHA256 password hashing with 100,000 iterations to prevent brute-force attacks.
+## 1. Security Architecture Summary
 
-### 2. Role-Based Access Control (RBAC)
-- **FastAPI Role Dependencies**: `require_role(["admin", "analyst"])` enforces strict endpoint authorization.
-- **Tenant Isolation**: `tenant_id` claim embedded in JWTs to scope queries per organization.
+CorpLens AI incorporates Defense-in-Depth (DiD) principles across network, application, data storage, and operational layers.
 
-### 3. Rate Limiting & Threat Protection
-- **API Protection**: Sliding-window rate limiting configured per tenant API key.
-- **Input Validation**: Pydantic v2 schemas sanitize all incoming payloads against SQL injection and XSS.
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ 1. Perimeter Security (TLS 1.3 Encryption, Reverse Proxy WAF)   │
+├─────────────────────────────────────────────────────────────────┤
+│ 2. Authentication & AuthZ (JWT Refresh, RBAC Guard Middleware)  │
+├─────────────────────────────────────────────────────────────────┤
+│ 3. Data Storage Security (PostgreSQL Row-Level Security RLS)    │
+├─────────────────────────────────────────────────────────────────┤
+│ 4. Passive OSINT Guarantee (Zero Invasive Port Scans / Hacking)  │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-### 4. Audit Trail & Compliance
-- **Security Audit Logs**: Action, user, resource, IP address, and status logged for all mutating operations.
-- **Lawful OSINT Compliance**: Non-intrusive public data collection header attached to API responses.
+---
+
+## 2. OWASP Top 10 Mitigation Matrix
+
+| OWASP Vulnerability | Threat Vector | CorpLens AI Enterprise Mitigation | Status |
+|:---|:---|:---|:---:|
+| **A01: Broken Access Control** | Unauthorized tenant data access | PostgreSQL Row-Level Security (`rls_policies.sql`) enforces `tenant_id` context on every ORM query. | ✅ VERIFIED |
+| **A02: Cryptographic Failures** | Password theft / Token forgery | PBKDF2-SHA256 password hashing with unique salt, 256-bit JWT secret signing. | ✅ VERIFIED |
+| **A03: Injection** | SQL / Cypher / Command injection | 100% SQLAlchemy parameterization, Cypher parameterized queries, Pydantic v2 validation. | ✅ VERIFIED |
+| **A04: Insecure Design** | Unlawful scanning liability | System operates strictly on passive public records (DNS, CT logs, public feeds). Zero active exploit attempts. | ✅ VERIFIED |
+| **A05: Security Misconfiguration**| Default credentials | Mandatory environment variable validation on server startup (`env_validator.py`). | ✅ VERIFIED |
+| **A07: Identification & Auth** | Brute force / Session hijack | JWT expiration (15 min access, 7 day refresh), rate limiting per IP. | ✅ VERIFIED |
+| **A08: Software & Data Integrity**| Webhook payload tampering | Cryptographic HMAC-SHA256 signature verification for outgoing and incoming webhooks. | ✅ VERIFIED |
+
+---
+
+## 3. Role-Based Access Control (RBAC) Matrix
+
+The system enforces four distinct access control tiers:
+
+| Permission / Action | Admin | Analyst | Viewer | Auditor |
+|:---|:---:|:---:|:---:|:---:|
+| **View Intelligence Profiles** | ✅ | ✅ | ✅ | ✅ |
+| **Trigger Passive Domain Scan**| ✅ | ✅ | ❌ | ❌ |
+| **Create / Update Cases** | ✅ | ✅ | ❌ | ❌ |
+| **Query RAG AI Copilot** | ✅ | ✅ | ✅ | ❌ |
+| **Export PDF / DOCX Reports** | ✅ | ✅ | ✅ | ✅ |
+| **Manage Tenant Users & RBAC** | ✅ | ❌ | ❌ | ❌ |
+| **Access Audit Logs** | ✅ | ❌ | ❌ | ✅ |
+
+---
+
+## 4. Compliance & Regulatory Alignment
+
+- **Lawful OSINT Assurance**: Adheres to non-intrusive public data collection standards. No port scans, vulnerability probes, or private credential harvesting.
+- **GDPR Compliance**: Right-to-be-forgotten endpoints and automated data retention purges for non-corporate PII.
+- **SOC2 Type II Ready**: Full audit log tracking (`audit_logs` table) recording user action, timestamp, IP address, and resource ID.

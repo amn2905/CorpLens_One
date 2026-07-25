@@ -212,12 +212,16 @@ pytest -v
 Detailed architectural blueprints and operating guides are available in the [`docs/`](file:///x:/CorpLens%20AI/docs/) directory:
 
 - 📖 **[`docs/ARCHITECTURE_GUIDE.md`](file:///x:/CorpLens%20AI/docs/ARCHITECTURE_GUIDE.md)** — Comprehensive System Architecture & Component Guide
+- 📖 **[`docs/API_DOCUMENTATION.md`](file:///x:/CorpLens%20AI/docs/API_DOCUMENTATION.md)** — Complete REST API Endpoint & Schema Reference
 - 📖 **[`docs/DATABASE_DESIGN.md`](file:///x:/CorpLens%20AI/docs/DATABASE_DESIGN.md)** — Relational ER Diagram, Schemas & RLS Security Policies
 - 📖 **[`docs/DEPLOYMENT_GUIDE_v3.md`](file:///x:/CorpLens%20AI/docs/DEPLOYMENT_GUIDE_v3.md)** — Production Deployment, Docker & Kubernetes Guide
 - 📖 **[`docs/SECURITY_REVIEW_v3.md`](file:///x:/CorpLens%20AI/docs/SECURITY_REVIEW_v3.md)** — Security Audit & Hardening Matrix
+- 📖 **[`docs/USER_GUIDE.md`](file:///x:/CorpLens%20AI/docs/USER_GUIDE.md)** — User & Analyst Operational Walkthrough Guide
 - 📖 **[`docs/PERFORMANCE_SUMMARY_v3.md`](file:///x:/CorpLens%20AI/docs/PERFORMANCE_SUMMARY_v3.md)** — Caching & Sub-second Performance Report
 - 📖 **[`docs/TESTING_SUMMARY.md`](file:///x:/CorpLens%20AI/docs/TESTING_SUMMARY.md)** — Automated Test Suite & Coverage Report
+- 📖 **[`CONTRIBUTING.md`](file:///x:/CorpLens%20AI/CONTRIBUTING.md)** — Developer Onboarding & Contribution Guidelines
 - 📖 **[`CHANGELOG.md`](file:///x:/CorpLens%20AI/CHANGELOG.md)** — Version Release History
+
 
 ---
 

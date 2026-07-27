@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🛡️ CorpLens One
+<img src="frontend/public/favicon.svg" width="128" height="128" alt="CorpLens One Logo" />
+
+# CorpLens One
 
 ### **AI-Powered Corporate Intelligence Platform**
 ***Smarter Intelligence. Better Decisions.***

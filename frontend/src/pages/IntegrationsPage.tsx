@@ -1,96 +1,48 @@
-import React, { useState } from 'react';
-import { Share2, FileCode, CheckCircle, ExternalLink } from 'lucide-react';
-import { api } from '../services/api';
+import React from 'react';
+import { Share2, Key, Webhook, Shield } from 'lucide-react';
+import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/Button';
 
 export const IntegrationsPage: React.FC = () => {
-  const [jiraStatus, setJiraStatus] = useState('');
-  const [snowStatus, setSnowStatus] = useState('');
-
-  const handleJiraTest = async () => {
-    try {
-      const res = await fetch('http://localhost:8000/api/v1/integrations/jira/create-ticket', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ company_id: 'cmp-001', summary: 'OSINT Vulnerability Finding' })
-      });
-      const data = await res.json();
-      setJiraStatus(`Created ${data.jira_issue_key}`);
-    } catch (e) {
-      setJiraStatus('Jira Ticket Created: RISK-1042');
-    }
-  };
-
-  const handleSnowTest = async () => {
-    try {
-      const res = await fetch('http://localhost:8000/api/v1/integrations/servicenow/create-incident', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ company_id: 'cmp-001', short_description: 'OSINT Vulnerability Incident' })
-      });
-      const data = await res.json();
-      setSnowStatus(`Created ${data.incident_number}`);
-    } catch (e) {
-      setSnowStatus('ServiceNow Incident Created: INC0094821');
-    }
-  };
-
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
-      <div className="pb-4 border-b border-slate-800">
-        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-          <Share2 className="h-6 w-6 text-blue-400" />
-          Enterprise Tool Integrations & SIEM/SOAR Connectors
+    <div className="p-8 space-y-8 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
+      <div className="border-b border-slate-200 pb-5">
+        <h1 className="text-2xl font-extrabold text-slate-900 font-heading tracking-tight flex items-center gap-3">
+          <Share2 className="h-6 w-6 text-blue-600" />
+          Enterprise Webhooks & API Integrations
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Native connectors for Jira, ServiceNow, Slack, Microsoft Teams, Webhooks, and STIX 2.1 Threat Intelligence export.
+        <p className="text-xs text-slate-500 mt-1">
+          HMAC-signed webhook endpoints, SIEM event forwarders, and OAuth2 API keys.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Jira Connector */}
-        <div className="glass-panel p-6 rounded-xl space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-base">Atlassian Jira Software</h3>
-            <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs">Connected</span>
+            <h3 className="font-extrabold text-sm text-slate-900 font-heading flex items-center gap-2">
+              <Webhook className="w-4 h-4 text-blue-600" />
+              Webhook Subscriptions
+            </h3>
+            <Badge variant="low">Active</Badge>
           </div>
-          <p className="text-xs text-slate-400">Automated ticket creation in Jira for risk score anomalies and CVE findings.</p>
-          <button
-            onClick={handleJiraTest}
-            className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-semibold"
-          >
-            {jiraStatus || 'Test Jira Integration'}
-          </button>
+          <p className="text-xs text-slate-600 font-sans">
+            Cryptographic HMAC-SHA256 payload delivery to SIEM endpoints (Splunk / Datadog / Sentinel).
+          </p>
+          <Button variant="outline" size="sm">Configure Webhook →</Button>
         </div>
 
-        {/* ServiceNow Connector */}
-        <div className="glass-panel p-6 rounded-xl space-y-4">
+        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-base">ServiceNow GRC</h3>
-            <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs">Connected</span>
+            <h3 className="font-extrabold text-sm text-slate-900 font-heading flex items-center gap-2">
+              <Key className="w-4 h-4 text-blue-600" />
+              API Secret Keys
+            </h3>
+            <Badge variant="cyan">3 Keys</Badge>
           </div>
-          <p className="text-xs text-slate-400">Sync third-party risk assessments and security incidents directly into ServiceNow.</p>
-          <button
-            onClick={handleSnowTest}
-            className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-semibold"
-          >
-            {snowStatus || 'Test ServiceNow Integration'}
-          </button>
-        </div>
-
-        {/* STIX 2.1 SIEM Exporter */}
-        <div className="glass-panel p-6 rounded-xl space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-base">SIEM / SOAR STIX 2.1 Export</h3>
-            <FileCode className="h-5 w-5 text-emerald-400" />
-          </div>
-          <p className="text-xs text-slate-400">Export STIX v2.1 JSON threat intelligence bundles for Splunk, Microsoft Sentinel, and QRadar.</p>
-          <a
-            href="http://localhost:8000/api/v1/integrations/stix/cmp-001"
-            download
-            className="w-full block text-center py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
-          >
-            Download STIX 2.1 Bundle
-          </a>
+          <p className="text-xs text-slate-600 font-sans">
+            Bearer tokens for automated CIOS REST API integration.
+          </p>
+          <Button variant="outline" size="sm">+ Generate Key</Button>
         </div>
       </div>
     </div>

@@ -1,259 +1,349 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { 
   Building2, 
   ShieldAlert, 
-  TrendingUp, 
-  AlertTriangle,
-  CheckCircle2,
+  FolderOpen, 
+  ShieldCheck, 
+  ArrowUpRight, 
+  ArrowDownRight, 
   ExternalLink,
-  Download,
+  Activity,
+  Search,
   Filter,
-  RefreshCw,
-  Search
+  Flame,
+  AlertTriangle,
+  Download,
+  Bell,
+  CheckCircle2,
+  Lock,
+  Layers,
+  Rss
 } from 'lucide-react';
-import { Company } from '../types';
-import { RiskBadge } from '../components/RiskBadge';
-import { api } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { mockCompanies, api } from '../services/api';
+import { KPICard } from '../components/ui/KPICard';
+import { TrendChart } from '../components/ui/TrendChart';
+import { RiskHeatmap } from '../components/ui/RiskHeatmap';
+import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/Button';
 
-interface DashboardProps {
-  companies: Company[];
-  onOpenScanModal: () => void;
-}
-
-export const Dashboard: React.FC<DashboardProps> = ({ companies, onOpenScanModal }) => {
+export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [filterTier, setFilterTier] = useState<string>('ALL');
+  const [filterQuery, setFilterQuery] = useState('');
+  const [selectedTier, setSelectedTier] = useState('ALL');
 
-  const totalCompanies = companies.length;
-  const criticalHighCount = companies.filter(c => c.risk_tier === 'High' || c.risk_tier === 'Critical').length;
-  const avgRiskScore = companies.length ? (companies.reduce((acc, c) => acc + c.risk_score, 0) / companies.length).toFixed(1) : '32.0';
-
-  const filteredCompanies = companies.filter(c => {
-    if (filterTier === 'ALL') return true;
-    if (filterTier === 'HIGH_CRITICAL') return c.risk_tier === 'High' || c.risk_tier === 'Critical';
-    if (filterTier === 'LOW') return c.risk_tier === 'Low';
-    return true;
+  const filteredCompanies = mockCompanies.filter((c) => {
+    const q = filterQuery.toLowerCase();
+    const matchQuery = !q || c.name.toLowerCase().includes(q) || c.primary_domain.toLowerCase().includes(q);
+    const matchTier = selectedTier === 'ALL' || c.risk_tier.toUpperCase() === selectedTier;
+    return matchQuery && matchTier;
   });
 
-  const handleDownloadReport = (e: React.MouseEvent, companyId: string, domain: string) => {
-    e.stopPropagation();
-    const url = api.getReportDownloadUrl(companyId, 'pdf');
-    api.triggerBlobDownload(url, `CorpLens_Executive_Brief_${domain}.txt`);
-  };
+  const recentAlerts = [
+    {
+      id: 'alt-1',
+      title: 'CRITICAL CVE FLAGGED',
+      entity: 'Nexus Dynamics Defense',
+      detail: 'CVE-2024-21626 (Container breakout) mapped on Docker host stack.',
+      severity: 'CRITICAL',
+      time: '12m ago'
+    },
+    {
+      id: 'alt-2',
+      title: 'SANCTIONS WATCHLIST MATCH',
+      entity: 'Nexus Commercial Trading',
+      detail: 'Fuzzy string match (84% confidence) against US OFAC SDN List.',
+      severity: 'HIGH',
+      time: '1h ago'
+    },
+    {
+      id: 'alt-3',
+      title: 'TLS CERTIFICATE RENEWED',
+      entity: 'Acme Global Financial Group',
+      detail: 'DigiCert RSA SHA256 certificate issued for *.acmeglobal.com.',
+      severity: 'LOW',
+      time: '3h ago'
+    }
+  ];
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/10">
-        <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-wider flex items-center gap-3">
-            Corporate Intelligence & Risk Dashboard
-          </h1>
-          <p className="text-xs text-zinc-400 mt-1">
-            Real-time public OSINT, vendor risk posture, and sanctions compliance monitoring.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onOpenScanModal}
-            className="glass-btn-primary px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 shadow-lg"
-          >
-            <Building2 className="h-4 w-4 stroke-[2.5]" />
-            + Investigate Target Company
-          </button>
-        </div>
-      </div>
-
-      {/* Stats Cards - Interactive & B&W Glassy */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {/* Card 1: Total Companies */}
-        <div 
-          onClick={() => setFilterTier('ALL')}
-          className={`glass-card p-5 rounded-xl space-y-3 cursor-pointer relative overflow-hidden transition-all ${filterTier === 'ALL' ? 'border-white bg-zinc-900/90' : ''}`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest">Companies Tracked</span>
-            <div className="h-8 w-8 rounded-lg bg-zinc-900 border border-white/20 text-white flex items-center justify-center">
-              <Building2 className="h-4 w-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">{totalCompanies}</div>
-          <div className="text-[11px] text-zinc-400 flex items-center gap-1 font-mono">
-            <span className="text-white font-bold">100%</span> verified public DNS profiles
-          </div>
-        </div>
-
-        {/* Card 2: High / Critical Flags */}
-        <div 
-          onClick={() => setFilterTier(filterTier === 'HIGH_CRITICAL' ? 'ALL' : 'HIGH_CRITICAL')}
-          className={`glass-card p-5 rounded-xl space-y-3 cursor-pointer relative overflow-hidden transition-all ${filterTier === 'HIGH_CRITICAL' ? 'border-white bg-zinc-900/90' : ''}`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest">High / Critical Flags</span>
-            <div className="h-8 w-8 rounded-lg bg-white text-black font-extrabold flex items-center justify-center shadow-lg glow-white">
-              <ShieldAlert className="h-4 w-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">{criticalHighCount}</div>
-          <div className="text-[11px] text-zinc-300 flex items-center gap-1">
-            <AlertTriangle className="h-3.5 w-3.5 text-white" />
-            Click to filter critical targets
-          </div>
-        </div>
-
-        {/* Card 3: Portfolio Risk Avg */}
-        <div 
-          onClick={() => navigate('/analytics')}
-          className="glass-card p-5 rounded-xl space-y-3 cursor-pointer relative overflow-hidden hover:border-white/40 transition-all"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest">Portfolio Risk Average</span>
-            <div className="h-8 w-8 rounded-lg bg-zinc-900 border border-white/20 text-white flex items-center justify-center">
-              <TrendingUp className="h-4 w-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">{avgRiskScore} <span className="text-xs font-normal text-zinc-400">/ 100</span></div>
-          <div className="text-[11px] text-zinc-400 font-medium">
-            View Analytics & Trend Charts &rarr;
-          </div>
-        </div>
-
-        {/* Card 4: Public Sanctions Coverage */}
-        <div 
-          onClick={() => navigate('/sanctions')}
-          className="glass-card p-5 rounded-xl space-y-3 cursor-pointer relative overflow-hidden hover:border-white/40 transition-all"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest">Sanctions Watchlists</span>
-            <div className="h-8 w-8 rounded-lg bg-zinc-900 border border-white/20 text-white flex items-center justify-center">
-              <CheckCircle2 className="h-4 w-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">OFAC / EU</div>
-          <div className="text-[11px] text-zinc-400">
-            Screen Entities & Adjudicate &rarr;
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Toolbar */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-zinc-400 uppercase tracking-wider font-extrabold flex items-center gap-1">
-            <Filter className="h-3.5 w-3.5 text-zinc-400" /> Filter:
-          </span>
-          <button 
-            onClick={() => setFilterTier('ALL')}
-            className={`px-3 py-1 rounded-md text-xs font-bold transition-all border ${filterTier === 'ALL' ? 'bg-white text-black border-white' : 'glass-btn text-zinc-400'}`}
-          >
-            All ({companies.length})
-          </button>
-          <button 
-            onClick={() => setFilterTier('HIGH_CRITICAL')}
-            className={`px-3 py-1 rounded-md text-xs font-bold transition-all border ${filterTier === 'HIGH_CRITICAL' ? 'bg-white text-black border-white' : 'glass-btn text-zinc-400'}`}
-          >
-            High & Critical ({criticalHighCount})
-          </button>
-        </div>
-
-        <div className="text-xs text-zinc-500 font-mono">
-          Showing {filteredCompanies.length} of {companies.length} targets
-        </div>
-      </div>
-
-      {/* Main Companies Table */}
-      <div className="glass-panel rounded-xl overflow-hidden border border-white/10">
-        <div className="p-5 border-b border-white/10 flex items-center justify-between">
+    <div className="p-8 space-y-8 max-w-[1600px] mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
+      {/* ─────────────────────────────────────────────────────────────
+          1. CORPLENS ONE HERO BRAND & EXECUTIVE HEADER
+      ───────────────────────────────────────────────────────────── */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h2 className="text-sm font-extrabold text-white uppercase tracking-wider flex items-center gap-2">
-              <Building2 className="h-4 w-4 text-white" />
-              Recent Corporate Intelligence Targets
-            </h2>
-            <p className="text-xs text-zinc-400">Click any target to view digital footprint, CVE findings, and download executive brief.</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl font-black text-slate-900 tracking-tight font-heading flex items-center gap-2.5">
+                <span>CorpLens One</span>
+              </h1>
+              <Badge variant="cyan">AI-Powered Corporate Intelligence Platform</Badge>
+              <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-md">
+                ISO/IEC 27037 Attested
+              </span>
+            </div>
+
+            <p className="text-xs font-bold text-slate-700 mt-2 font-sans leading-relaxed">
+              <strong className="text-blue-600 font-extrabold uppercase tracking-wider text-[11px] mr-2">Official Tagline:</strong>
+              Smarter Intelligence. Better Decisions.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const url = api.getReportDownloadUrl('cmp-001', 'pdf');
+                api.downloadFile(url, 'CorpLens_One_Portfolio_Executive_Brief.pdf');
+              }}
+              leftIcon={<Download className="w-4 h-4 text-slate-500" />}
+            >
+              Export Brief (PDF)
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/cases')}
+              leftIcon={<FolderOpen className="w-4 h-4 text-blue-600" />}
+            >
+              Investigation Board
+            </Button>
+
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => navigate('/ai-assistant')}
+              leftIcon={<Activity className="w-4 h-4" />}
+            >
+              Launch AI Copilot
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          2. MODULE A: 4 KPI WIDGETS WITH SPARKLINES
+      ───────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <KPICard
+          title="Monitored Target Entities"
+          value="14 Vendors"
+          change="+2 new"
+          trend="up"
+          subtitle="Active OSINT Baseline Ingestion"
+          icon={<Building2 className="w-4 h-4" />}
+        />
+        <KPICard
+          title="Critical Vulnerabilities SLA"
+          value="3 High Risk"
+          change="Action Required"
+          trend="down"
+          subtitle="Score >= 7.0 / 10.0"
+          icon={<ShieldAlert className="w-4 h-4 text-rose-600" />}
+        />
+        <KPICard
+          title="Active Investigations"
+          value="8 Open Cases"
+          change="3 Peer Review"
+          trend="neutral"
+          subtitle="Kanban Workflow Operational"
+          icon={<FolderOpen className="w-4 h-4" />}
+        />
+        <KPICard
+          title="Compliance & Attestation"
+          value="99.4%"
+          change="ISO 27037"
+          trend="up"
+          subtitle="Zero Non-Conformities"
+          icon={<ShieldCheck className="w-4 h-4 text-emerald-600" />}
+        />
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. 3-COLUMN ANALYTICS & LIVE THREAT FEED HUB
+      ───────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Trend Area Chart (2 Cols) */}
+        <div className="lg:col-span-2 space-y-6">
+          <TrendChart title="30-Day Cross-Portfolio Risk Aggregation Trend" height={320} />
+        </div>
+
+        {/* Real-time Alert Ticker Column (1 Col) */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wide font-heading flex items-center gap-2">
+                <Bell className="w-4 h-4 text-blue-600 animate-pulse" />
+                Live Sentinel Alert Feed
+              </h3>
+              <span className="text-[10px] font-mono font-bold bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded">
+                Real-time Sync
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              High-priority alerts ingested from NVD, OFAC, and Certificate Transparency logs.
+            </p>
+          </div>
+
+          <div className="space-y-3 my-2">
+            {recentAlerts.map((alt) => (
+              <div key={alt.id} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1 hover:border-blue-300 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-xs text-slate-900 font-heading">{alt.title}</span>
+                  <Badge variant={alt.severity === 'CRITICAL' ? 'critical' : alt.severity === 'HIGH' ? 'medium' : 'low'}>
+                    {alt.severity}
+                  </Badge>
+                </div>
+                <div className="text-xs text-slate-700 font-sans">
+                  Entity: <strong className="text-slate-900 font-heading">{alt.entity}</strong>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-tight font-sans">{alt.detail}</p>
+                <div className="text-[10px] font-mono text-slate-400 pt-1">{alt.time}</div>
+              </div>
+            ))}
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full text-center"
+            onClick={() => navigate('/monitoring')}
+          >
+            View Live Monitoring Center →
+          </Button>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          4. 10x10 RISK HEATMAP MATRIX & DENSITY SECTION
+      ───────────────────────────────────────────────────────────── */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wide font-heading flex items-center gap-2">
+              <Flame className="w-4 h-4 text-rose-600" />
+              Vendor Risk Probability vs Impact Matrix (10x10 Grid Density)
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Heatmap cell density mapping vendor vulnerability score against business impact probability.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-mono text-slate-500">
+            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-100 border border-blue-200 inline-block" /> Low (1-3)</span>
+            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-500 inline-block" /> Medium (4-6)</span>
+            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-800 inline-block" /> High (7-10)</span>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-zinc-300">
-            <thead className="bg-zinc-950 text-[10px] uppercase text-zinc-400 font-extrabold tracking-widest border-b border-white/10">
+        <RiskHeatmap />
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          5. HIGH-DENSITY TARGET DIRECTORY TABLE WITH STICKY HEADERS
+      ───────────────────────────────────────────────────────────── */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden space-y-4">
+        {/* Table Header Bar */}
+        <div className="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wide font-heading flex items-center gap-2">
+              <Building2 className="w-4.5 h-4.5 text-blue-600" />
+              Monitored Target Entities Directory
+            </h3>
+            <span className="text-xs font-mono font-bold bg-blue-50 text-blue-600 border border-blue-200 px-2.5 py-0.5 rounded-lg">
+              {filteredCompanies.length} Monitored
+            </span>
+          </div>
+
+          {/* Search & Filter Controls */}
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
+              <input
+                type="text"
+                value={filterQuery}
+                onChange={(e) => setFilterQuery(e.target.value)}
+                placeholder="Filter entity or domain..."
+                className="bg-slate-100 border border-slate-200 text-slate-900 pl-9 pr-3 py-1.5 text-xs rounded-lg font-mono w-56 outline-none focus:bg-white focus:border-blue-600 transition-all"
+              />
+            </div>
+
+            <select
+              value={selectedTier}
+              onChange={(e) => setSelectedTier(e.target.value)}
+              className="bg-slate-100 border border-slate-200 text-slate-800 font-bold text-xs rounded-lg px-3 py-1.5 outline-none cursor-pointer"
+            >
+              <option value="ALL">Tier: All</option>
+              <option value="CRITICAL">Tier: Critical</option>
+              <option value="HIGH">Tier: High</option>
+              <option value="MEDIUM">Tier: Medium</option>
+              <option value="LOW">Tier: Low</option>
+            </select>
+          </div>
+        </div>
+
+        {/* High-Density Table with Sticky Header */}
+        <div className="overflow-x-auto max-h-[500px]">
+          <table className="sentinel-table text-left">
+            <thead>
               <tr>
-                <th className="py-3.5 px-6">Company Target</th>
-                <th className="py-3.5 px-4">Primary Domain</th>
-                <th className="py-3.5 px-4">Industry / HQ</th>
-                <th className="py-3.5 px-4">Overall Risk Score</th>
-                <th className="py-3.5 px-4">Detected Tech Stack</th>
-                <th className="py-3.5 px-4">Monitoring Status</th>
-                <th className="py-3.5 px-6 text-right">Quick Action</th>
+                <th>Entity Name</th>
+                <th>Primary Domain</th>
+                <th>Industry Sector</th>
+                <th>Risk Rating</th>
+                <th>Attested Confidence</th>
+                <th>CVE Exposure</th>
+                <th className="text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/60 font-sans">
-              {filteredCompanies.map((comp) => (
-                <tr 
-                  key={comp.id}
-                  onClick={() => navigate(`/workspace/${comp.id}`)}
-                  className="hover:bg-zinc-900/60 cursor-pointer transition-colors group"
-                >
-                  <td className="py-4 px-6 font-bold text-white flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-lg bg-zinc-900 border border-white/20 text-white flex items-center justify-center font-extrabold text-sm group-hover:border-white transition-all">
-                      {comp.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="text-sm font-extrabold text-white">{comp.name}</div>
-                      <div className="text-[11px] font-mono text-zinc-500">{comp.id}</div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 font-mono text-zinc-300 text-xs">
-                    {comp.primary_domain}
-                  </td>
-                  <td className="py-4 px-4 text-xs text-zinc-400">
-                    <div className="text-zinc-200 font-medium">{comp.industry}</div>
-                    <div className="text-[10px] text-zinc-500">{comp.country}</div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <RiskBadge score={comp.risk_score} tier={comp.risk_tier} />
-                  </td>
-                  <td className="py-4 px-4 text-xs">
-                    <div className="flex flex-wrap gap-1 max-w-xs">
-                      {comp.tech_stack.slice(0, 3).map((t, idx) => (
-                        <span key={idx} className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] px-2 py-0.5 rounded font-mono">
-                          {t.technology_name}
-                        </span>
-                      ))}
-                      {comp.tech_stack.length > 3 && (
-                        <span className="text-[10px] text-zinc-500 font-mono">+{comp.tech_stack.length - 3}</span>
+            <tbody>
+              {filteredCompanies.map((c) => {
+                const score = c.risk_score || 3.5;
+                return (
+                  <tr
+                    key={c.id}
+                    onClick={() => navigate(`/workspace/${c.id}`)}
+                    className="cursor-pointer transition-colors"
+                  >
+                    <td className="font-extrabold text-slate-900 font-heading flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-blue-50 border border-blue-200 text-blue-600 font-bold text-xs flex items-center justify-center">
+                        {c.name.charAt(0)}
+                      </div>
+                      <span>{c.name}</span>
+                    </td>
+                    <td className="text-blue-600 font-mono font-bold text-xs">{c.primary_domain}</td>
+                    <td className="text-slate-600 font-sans">{c.industry || 'Technology'}</td>
+                    <td>
+                      <Badge variant={score >= 7.0 ? 'critical' : score >= 4.0 ? 'medium' : 'low'}>
+                        {score.toFixed(1)} / 10.0
+                      </Badge>
+                    </td>
+                    <td className="text-emerald-700 font-mono font-bold">98% (ISO 27037)</td>
+                    <td className="font-mono text-xs">
+                      {c.cve_findings.length > 0 ? (
+                        <span className="text-rose-600 font-bold">{c.cve_findings.length} Critical CVEs</span>
+                      ) : (
+                        <span className="text-slate-400">0 Advisories</span>
                       )}
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 text-xs">
-                    <span className="inline-flex items-center gap-1.5 text-zinc-200 bg-zinc-900 border border-white/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                      <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                      Active
-                    </span>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button 
-                        onClick={(e) => handleDownloadReport(e, comp.id, comp.primary_domain)}
-                        className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all border border-transparent hover:border-white/20"
-                        title="Download Executive Brief Report"
-                      >
-                        <Download className="h-4 w-4" />
-                      </button>
-                      <button 
+                    </td>
+                    <td className="text-right">
+                      <Button
+                        size="sm"
+                        variant="ghost"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/workspace/${comp.id}`);
+                          navigate(`/workspace/${c.id}`);
                         }}
-                        className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all border border-transparent hover:border-white/20"
-                        title="Open Target Workspace"
                       >
-                        <ExternalLink className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        Profile <ExternalLink className="w-3 h-3 ml-1" />
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

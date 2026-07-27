@@ -56,6 +56,7 @@ export interface Company {
   risk_tier: 'Low' | 'Medium' | 'High' | 'Critical';
   is_monitored: boolean;
   last_scanned?: string;
+  confidence_score?: number;
   domains: DomainRecord[];
   tech_stack: TechStackRecord[];
   cve_findings: CVEFinding[];

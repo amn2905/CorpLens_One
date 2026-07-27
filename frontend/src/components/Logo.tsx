@@ -7,54 +7,65 @@ interface LogoProps {
 
 export const CorpLensLogo: React.FC<LogoProps> = ({ className = '', size = 36 }) => {
   return (
-    <div className={`relative flex items-center justify-center ${className}`} style={{ width: size, height: size }}>
+    <div className={`relative flex items-center justify-center shrink-0 ${className}`} style={{ width: size, height: size }}>
       <svg
         width={size}
         height={size}
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="transform transition-transform hover:scale-105 duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
+        className="transform transition-transform hover:scale-105 duration-300 drop-shadow-sm"
       >
         <defs>
-          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="50%" stopColor="#a1a1aa" />
-            <stop offset="100%" stopColor="#27272a" />
+          {/* Corporate Blue Gradient */}
+          <linearGradient id="corpOneBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3B82F6" />
+            <stop offset="60%" stopColor="#2563EB" />
+            <stop offset="100%" stopColor="#1D4ED8" />
           </linearGradient>
-          <linearGradient id="coreGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="100%" stopColor="#e4e4e7" stopOpacity="0.8" />
-          </linearGradient>
-          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+
+          {/* Soft Drop Shadow for Inner Geometry */}
+          <filter id="innerShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="1.5" stdDeviation="1" floodColor="#1E40AF" floodOpacity="0.25" />
           </filter>
         </defs>
 
-        {/* Outer Cyber Shield Base */}
+        {/* Outer Heavy Shield Contour */}
         <path
-          d="M50 8 L85 24 V50 C85 70 70 86 50 92 C30 86 15 70 15 50 V24 L50 8 Z"
-          fill="url(#shieldGrad)"
-          fillOpacity="0.15"
-          stroke="url(#shieldGrad)"
-          strokeWidth="3.5"
+          d="M50 8 C68 8 83 16 85 33 V52 C85 73 69 88 50 94 C31 88 15 73 15 52 V33 C17 16 32 8 50 8 Z"
+          fill="none"
+          stroke="url(#corpOneBlueGrad)"
+          strokeWidth="10"
+          strokeLinecap="round"
           strokeLinejoin="round"
         />
 
-        {/* Inner Futuristic Lens Aperture Ring */}
-        <circle cx="50" cy="48" r="22" stroke="#ffffff" strokeWidth="2" strokeDasharray="6 3" strokeOpacity="0.8" />
-        <circle cx="50" cy="48" r="15" stroke="#a1a1aa" strokeWidth="1.5" strokeOpacity="0.6" />
+        {/* Inner CorpLens One Monogram ("1" & Interlocking Cyber Nodes) */}
+        <g filter="url(#innerShadow)">
+          {/* Center Numeral "1" Pillar */}
+          <path
+            d="M42 37 L53 30 V68 H47 V42 L42 45 Z"
+            fill="url(#corpOneBlueGrad)"
+          />
 
-        {/* Optical Aperture Blades */}
-        <line x1="50" y1="26" x2="62" y2="40" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="72" y1="48" x2="58" y2="60" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="50" y1="70" x2="38" y2="56" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="28" y1="48" x2="42" y2="36" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
+          {/* Right Structural Wing (Interlocking "L" Hook) */}
+          <path
+            d="M56 35 L62 38 V50 L71 56 V62 L56 52 Z"
+            fill="url(#corpOneBlueGrad)"
+          />
 
-        {/* Central Quantum Eye / Lens Core */}
-        <circle cx="50" cy="48" r="6" fill="url(#coreGlow)" filter="url(#glow)" />
-        <circle cx="50" cy="48" r="2" fill="#000000" />
+          {/* Left Structural Wing (Interlocking "C" Chevron Base) */}
+          <path
+            d="M44 52 L31 58 V51 L39 46 V39 H44 Z"
+            fill="url(#corpOneBlueGrad)"
+          />
+
+          {/* Bottom Left Chevron Accent */}
+          <path
+            d="M39 59 L44 63 V68 H39 L31 63 Z"
+            fill="url(#corpOneBlueGrad)"
+          />
+        </g>
       </svg>
     </div>
   );

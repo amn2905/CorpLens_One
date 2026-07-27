@@ -54,19 +54,12 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
 
 export const Sidebar: React.FC = () => {
   return (
-    <aside
-      className="w-64 flex flex-col justify-between h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto"
-      style={{
-        background: 'rgba(1, 4, 20, 0.92)',
-        backdropFilter: 'blur(24px)',
-        borderRight: '1px solid rgba(37, 99, 235, 0.15)'
-      }}
-    >
-      <div className="p-4 space-y-5">
+    <aside className="w-60 shrink-0 flex flex-col justify-between h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto bg-white border-r border-slate-200">
+      <div className="p-3 space-y-4">
         {NAV_SECTIONS.map((section) => (
           <div key={section.title}>
             {/* Section header */}
-            <div className="text-[9px] font-extrabold text-blue-500/50 uppercase tracking-[0.18em] px-3 mb-2">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-1.5 font-mono">
               {section.title}
             </div>
             <div className="space-y-0.5">
@@ -78,28 +71,19 @@ export const Sidebar: React.FC = () => {
                     to={item.to}
                     end={item.to === '/'}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all relative group ${
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all relative group ${
                         isActive
-                          ? 'text-white'
-                          : 'text-blue-300/50 hover:text-blue-100 hover:bg-blue-950/50'
+                          ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600'
+                          : 'text-slate-600 font-medium hover:text-slate-900 hover:bg-slate-100'
                       }`
                     }
-                    style={({ isActive }) => isActive ? {
-                      background: 'rgba(37, 99, 235, 0.15)',
-                      border: '1px solid rgba(59, 130, 246, 0.22)',
-                      boxShadow: '0 0 16px rgba(37, 99, 235, 0.12)'
-                    } : {}}
                   >
                     {({ isActive }) => (
                       <>
-                        {/* Active left accent bar */}
+                        <Icon className={`h-4 w-4 shrink-0 ${isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                        <span>{item.label}</span>
                         {isActive && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 nav-active-bar rounded-r" />
-                        )}
-                        <Icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-blue-400' : ''}`} />
-                        <span className={isActive ? 'text-white font-bold' : ''}>{item.label}</span>
-                        {isActive && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-400 shrink-0" />
+                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600 shrink-0" />
                         )}
                       </>
                     )}

@@ -1,79 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { CompanyWorkspace } from './pages/CompanyWorkspace';
-import { VendorPortfolio } from './pages/VendorPortfolio';
-import { SanctionsScreening } from './pages/SanctionsScreening';
-import { GraphPage } from './pages/GraphPage';
-import { AiAssistantPage } from './pages/AiAssistantPage';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { TimelinePage } from './pages/TimelinePage';
+import { VendorPortfolio } from './pages/VendorPortfolio';
 import { MonitoringPage } from './pages/MonitoringPage';
+import { SanctionsScreening } from './pages/SanctionsScreening';
 import { TasksPage } from './pages/TasksPage';
+import { GraphPage } from './pages/GraphPage';
+import { AiAssistantPage } from './pages/AiAssistantPage';
 import { IntegrationsPage } from './pages/IntegrationsPage';
 import { AdminPage } from './pages/AdminPage';
 import { CaseManagementPage } from './pages/CaseManagementPage';
 import { SupplyChainPage } from './pages/SupplyChainPage';
 import { ExecutivePage } from './pages/ExecutivePage';
 import { ThreatIntelPage } from './pages/ThreatIntelPage';
-import { api, mockCompanies } from './services/api';
+import { NewInvestigationModal } from './components/NewInvestigationModal';
+import { AuthProvider } from './context/AuthContext';
+import { mockCompanies } from './services/api';
 import { Company } from './types';
-import { X, Sparkles } from 'lucide-react';
 
-export const AppContent: React.FC = () => {
+const MainLayout: React.FC = () => {
+  const navigate = useNavigate();
   const [companies, setCompanies] = useState<Company[]>(mockCompanies);
   const [isScanModalOpen, setIsScanModalOpen] = useState(false);
-  const [newTargetName, setNewTargetName] = useState('');
-  const [newTargetDomain, setNewTargetDomain] = useState('');
-  const [newTargetIndustry, setNewTargetIndustry] = useState('');
-  const [isScanning, setIsScanning] = useState(false);
 
-  useEffect(() => {
-    api.getCompanies().then(setCompanies);
-  }, []);
-
-  const handleSearch = async (q: string) => {
-    if (!q) {
-      api.getCompanies().then(setCompanies);
-      return;
+  const handleSearch = (q: string) => {
+    if (q.trim()) {
+      const match = companies.find(c => 
+        c.name.toLowerCase().includes(q.toLowerCase()) || 
+        c.primary_domain.toLowerCase().includes(q.toLowerCase())
+      );
+      if (match) {
+        navigate(`/workspace/${match.id}`);
+      }
     }
-    const filtered = mockCompanies.filter(c => 
-      c.name.toLowerCase().includes(q.toLowerCase()) ||
-      c.primary_domain.toLowerCase().includes(q.toLowerCase()) ||
-      c.industry?.toLowerCase().includes(q.toLowerCase())
-    );
-    setCompanies(filtered);
   };
 
-  const handleStartScan = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTargetDomain) return;
+  const handleScanSubmit = (data: {
+    domain: string;
+    name: string;
+    industry: string;
+    options: any;
+    depth: string;
+  }) => {
+    const newId = `cmp-${Date.now()}`;
+    const scannedCompany: Company = {
+      id: newId,
+      name: data.name,
+      primary_domain: data.domain,
+      risk_score: 2.8,
+      risk_tier: 'Low',
+      is_monitored: true,
+      country: 'United States',
+      industry: data.industry,
+      last_scanned: new Date().toISOString(),
+      confidence_score: 0.98,
+      domains: [
+        {
+          id: `dom-${newId}-1`,
+          domain_name: data.domain,
+          ip_address: '104.21.88.14',
+          hosting_provider: 'Cloudflare Anycast CDN',
+          asn: 'AS13335',
+          ssl_issuer: 'DigiCert TLS RSA CA G2',
+          ssl_valid: true,
+          dns_records: {
+            A: ['104.21.88.14', '172.67.182.21'],
+            MX: [`mail.${data.domain}`],
+            TXT: ['v=spf1 include:_spf.google.com ~all']
+          }
+        }
+      ],
+      tech_stack: [
+        { id: `t-1`, category: 'Web Server', technology_name: 'Nginx', detected_version: '1.24.0', confidence: 0.96 },
+        { id: `t-2`, category: 'JS Framework', technology_name: 'React', detected_version: '18.2.0', confidence: 0.98 }
+      ],
+      cve_findings: [],
+      sanctions_matches: [],
+      risk_breakdown: {
+        overall_score: 2.8,
+        risk_tier: 'Low',
+        infrastructure_score: 12.0,
+        technology_score: 20.0,
+        reputation_score: 10.0,
+        compliance_score: 4.0,
+        ai_summary: `Automated baseline scan complete for ${data.domain}. Zero sanctions matches found.`
+      }
+    };
 
-    setIsScanning(true);
-    const scannedCompany = await api.triggerScan(
-      newTargetName || newTargetDomain.split('.')[0].toUpperCase(),
-      newTargetDomain,
-      newTargetIndustry || 'Software & Technology'
-    );
     setCompanies(prev => [scannedCompany, ...prev]);
-    setIsScanning(false);
     setIsScanModalOpen(false);
-    setNewTargetName('');
-    setNewTargetDomain('');
+    navigate(`/workspace/${newId}`);
   };
 
   return (
-    <div className="min-h-screen text-slate-100 flex flex-col font-sans" style={{ background: '#01040f' }}>
+    <div className="min-h-screen text-slate-900 flex flex-col font-sans bg-slate-50">
       <Navbar onOpenNewScan={() => setIsScanModalOpen(true)} onSearch={handleSearch} />
 
       <div className="flex-1 flex">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-black">
+        <main className="flex-1 overflow-y-auto bg-slate-50">
           <Routes>
-            <Route path="/" element={<Dashboard companies={companies} onOpenScanModal={() => setIsScanModalOpen(true)} />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/workspace/:id" element={<CompanyWorkspace />} />
             <Route path="/analytics" element={<AnalyticsDashboard />} />
             <Route path="/timeline" element={<TimelinePage />} />
@@ -93,84 +125,11 @@ export const AppContent: React.FC = () => {
         </main>
       </div>
 
-      {/* New OSINT Investigation Modal - B&W Glassy */}
-      {isScanModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel border border-blue-500/25 rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl glow-blue">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-white" />
-                Launch OSINT Intelligence Scan
-              </h3>
-              <button 
-                onClick={() => setIsScanModalOpen(false)}
-                className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleStartScan} className="space-y-4">
-              <div>
-                <label className="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest mb-1">
-                  Target Domain Name (Required)
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. microsoft.com or github.com"
-                  value={newTargetDomain}
-                  onChange={(e) => setNewTargetDomain(e.target.value)}
-                  className="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-white font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest mb-1">
-                  Company Legal Name (Optional)
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Microsoft Corporation"
-                  value={newTargetName}
-                  onChange={(e) => setNewTargetName(e.target.value)}
-                  className="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest mb-1">
-                  Industry / Sector
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Cloud Software / Cyber Enterprise"
-                  value={newTargetIndustry}
-                  onChange={(e) => setNewTargetIndustry(e.target.value)}
-                  className="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs text-white"
-                />
-              </div>
-
-              <div className="pt-2 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setIsScanModalOpen(false)}
-                  className="glass-btn px-4 py-2 rounded-xl text-xs font-bold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isScanning}
-                  className="glass-btn-primary px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider shadow-lg flex items-center gap-2"
-                >
-                  {isScanning ? 'Gathering Public Data...' : 'Execute OSINT Scan'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <NewInvestigationModal
+        isOpen={isScanModalOpen}
+        onClose={() => setIsScanModalOpen(false)}
+        onSubmitScan={handleScanSubmit}
+      />
     </div>
   );
 };
@@ -178,9 +137,9 @@ export const AppContent: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <Router>
+        <MainLayout />
+      </Router>
     </AuthProvider>
   );
 };

@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenNewScan, onSearch }) => {
   }, []);
 
   return (
-    <header className="h-16 sticky top-3 z-40 flex items-center justify-between px-5 bg-white border border-[#DCE7F5] rounded-[20px] shadow-[0_6px_18px_rgba(120,160,210,0.15)] mb-4 font-sans">
+    <header className="h-16 sticky top-0 z-40 flex items-center justify-between px-5 bg-white border border-[#DCE7F5] rounded-[20px] shadow-[0_6px_18px_rgba(120,160,210,0.15)] font-sans">
       {/* Brand Logo & Title */}
       <div className="flex items-center gap-4">
         <div 

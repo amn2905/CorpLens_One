@@ -26,7 +26,7 @@ const NAV_ITEMS: NavItem[] = [
 
 export const Sidebar: React.FC = () => {
   return (
-    <aside className="w-64 shrink-0 flex flex-col justify-between h-[calc(100vh-5.5rem)] sticky top-20 bg-[#F4F9FF] border border-[#DCE7F5] rounded-[24px] shadow-[0_6px_18px_rgba(120,160,210,0.12)] p-3.5 font-sans overflow-y-auto">
+    <aside className="w-64 shrink-0 flex flex-col justify-between h-[calc(100vh-6rem)] bg-[#F4F9FF] border border-[#DCE7F5] rounded-[24px] shadow-[0_6px_18px_rgba(120,160,210,0.12)] p-3.5 font-sans overflow-y-auto">
       <div className="space-y-1">
         <div className="text-[10px] font-extrabold text-[#64748B] uppercase tracking-wider px-3 mb-2 font-heading">
           Platform OS

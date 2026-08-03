@@ -21,18 +21,18 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-bold transition-all rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'inline-flex items-center justify-center font-bold transition-all rounded-[14px] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-sans';
 
   const variants = {
-    default: 'bg-surface hover:bg-surface-hover text-text-main border border-border-subtle shadow-sm',
-    primary: 'bg-primary hover:bg-primary-hover text-white border border-blue-400/30 shadow-lg shadow-blue-600/25',
-    outline: 'bg-transparent border border-border-subtle text-blue-300 hover:text-white hover:bg-blue-950/40',
-    ghost: 'bg-transparent hover:bg-surface text-text-muted hover:text-text-main',
-    danger: 'bg-risk-critical/15 hover:bg-risk-critical/25 text-red-300 border border-risk-critical/40',
+    default: 'bg-[#EEF6FF] hover:bg-[#DBEAFE] text-[#3B82F6] border border-[#DCE7F5]',
+    primary: 'bg-[#3B82F6] hover:bg-[#2563EB] text-white shadow-[0_4px_12px_rgba(59,130,246,0.25)] hover:shadow-[0_6px_16px_rgba(59,130,246,0.35)]',
+    outline: 'bg-[#EEF6FF] hover:bg-[#DBEAFE] text-[#3B82F6] border border-[#DCE7F5]',
+    ghost: 'bg-transparent hover:bg-[#EEF6FF] text-[#64748B] hover:text-[#1E293B]',
+    danger: 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200',
   };
 
   const sizes = {
-    sm: 'text-xs px-3 py-1.5 gap-1.5',
+    sm: 'text-xs px-3.5 py-1.5 gap-1.5',
     md: 'text-xs px-4 py-2 gap-2',
     lg: 'text-sm px-5 py-2.5 gap-2.5',
   };

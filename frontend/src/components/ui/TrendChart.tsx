@@ -40,53 +40,55 @@ export const TrendChart: React.FC<TrendChartProps> = ({
   height = 240,
 }) => {
   return (
-    <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h4 className="text-sm font-bold text-slate-900 font-heading tracking-wide">
-            {title}
-          </h4>
-          <p className="text-xs text-slate-500">{subtitle}</p>
+    <div className="w-full">
+      {title && (
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h4 className="text-sm font-extrabold text-[#1E293B] font-heading tracking-wide">
+              {title}
+            </h4>
+            {subtitle && <p className="text-xs text-[#64748B]">{subtitle}</p>}
+          </div>
+          <div className="flex items-center gap-4 text-xs font-mono">
+            <span className="flex items-center gap-1.5 text-[#3B82F6] font-bold">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6]" />
+              Portfolio Score
+            </span>
+            <span className="flex items-center gap-1.5 text-rose-600 font-bold">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+              High-Risk Incidents
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-4 text-xs font-mono">
-          <span className="flex items-center gap-1.5 text-blue-600 font-medium">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
-            Portfolio Score
-          </span>
-          <span className="flex items-center gap-1.5 text-rose-600 font-medium">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-600" />
-            High-Risk Incidents
-          </span>
-        </div>
-      </div>
+      )}
 
       <div style={{ width: '100%', height }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="riskColorLight" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2563EB" stopOpacity={0.25} />
-                <stop offset="95%" stopColor="#2563EB" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.25} />
+                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="cveColorLight" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#DC2626" stopOpacity={0.20} />
-                <stop offset="95%" stopColor="#DC2626" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#EF4444" stopOpacity={0.20} />
+                <stop offset="95%" stopColor="#EF4444" stopOpacity={0.0} />
               </linearGradient>
             </defs>
 
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#EEF6FF" vertical={false} />
 
             <XAxis
               dataKey="date"
-              stroke="#94a3b8"
+              stroke="#94A3B8"
               fontSize={11}
               fontFamily="JetBrains Mono"
               tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
+              axisLine={{ stroke: '#DCE7F5' }}
             />
 
             <YAxis
-              stroke="#94a3b8"
+              stroke="#94A3B8"
               fontSize={11}
               fontFamily="JetBrains Mono"
               tickLine={false}
@@ -96,12 +98,12 @@ export const TrendChart: React.FC<TrendChartProps> = ({
 
             <Tooltip
               contentStyle={{
-                backgroundColor: '#ffffff',
-                borderColor: '#cbd5e1',
-                borderRadius: '8px',
-                color: '#0f172a',
+                backgroundColor: '#FFFFFF',
+                borderColor: '#DCE7F5',
+                borderRadius: '14px',
+                color: '#1E293B',
                 fontSize: '12px',
-                boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)',
+                boxShadow: '0 6px 18px rgba(120, 160, 210, 0.15)',
               }}
             />
 
@@ -109,7 +111,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
               type="monotone"
               dataKey="avgRiskScore"
               name="Portfolio Risk Score"
-              stroke="#2563EB"
+              stroke="#3B82F6"
               strokeWidth={3}
               fillOpacity={1}
               fill="url(#riskColorLight)"
@@ -119,7 +121,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
               type="monotone"
               dataKey="criticalCVEs"
               name="Critical Vulnerabilities"
-              stroke="#DC2626"
+              stroke="#EF4444"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#cveColorLight)"

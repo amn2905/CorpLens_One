@@ -1,6 +1,5 @@
 import React from 'react';
 import { Clock, Globe, ShieldAlert, Cpu } from 'lucide-react';
-import { Badge } from '../components/ui/Badge';
 
 export const TimelinePage: React.FC = () => {
   const events = [
@@ -10,31 +9,39 @@ export const TimelinePage: React.FC = () => {
   ];
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
-      <div className="border-b border-slate-200 pb-5">
-        <h1 className="text-2xl font-extrabold text-slate-900 font-heading tracking-tight flex items-center gap-3">
-          <Clock className="h-6 w-6 text-blue-600" />
-          Chronological OSINT Event Timeline
-        </h1>
-        <p className="text-xs text-slate-500 mt-1">
-          Historical sequence of scan events, telemetry alerts, and analyst case updates.
-        </p>
+    <div className="space-y-6 font-sans">
+      {/* Header Banner */}
+      <div className="clay-panel p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-extrabold text-[#1E293B] font-heading tracking-tight flex items-center gap-3">
+              <Clock className="h-6 w-6 text-[#3B82F6]" />
+              Chronological OSINT Telemetry Timeline
+            </h1>
+            <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-3 py-1 rounded-full">
+              Audit Stream Active
+            </span>
+          </div>
+          <p className="text-xs text-[#64748B] mt-1.5 leading-relaxed">
+            Historical sequence of scan events, threat telemetry alerts, and analyst case updates.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-4">
         {events.map((e, idx) => {
           const Icon = e.icon;
           return (
-            <div key={idx} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-start gap-4 hover:shadow-md transition-all">
-              <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 shrink-0">
+            <div key={idx} className="clay-card p-5 flex items-start gap-4">
+              <div className="p-2.5 rounded-[12px] bg-[#EEF6FF] border border-[#DCE7F5] text-[#3B82F6] shrink-0">
                 <Icon className="w-5 h-5" />
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                  <h4 className="font-extrabold text-sm text-slate-900 font-heading">{e.title}</h4>
-                  <span className="text-[10px] font-mono text-slate-400">{e.date}</span>
+                  <h4 className="font-extrabold text-sm text-[#1E293B] font-heading">{e.title}</h4>
+                  <span className="text-[10px] font-mono text-[#94A3B8]">{e.date}</span>
                 </div>
-                <p className="text-xs text-slate-600 font-sans">{e.desc}</p>
+                <p className="text-xs text-[#64748B] leading-relaxed">{e.desc}</p>
               </div>
             </div>
           );

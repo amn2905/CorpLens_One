@@ -1,6 +1,5 @@
 import React from 'react';
-import { Users, Building2, ShieldCheck } from 'lucide-react';
-import { Badge } from '../components/ui/Badge';
+import { Users, Building2, ShieldCheck, Award } from 'lucide-react';
 
 export const ExecutivePage: React.FC = () => {
   const executives = [
@@ -10,30 +9,44 @@ export const ExecutivePage: React.FC = () => {
   ];
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
-      <div className="border-b border-slate-200 pb-5">
-        <h1 className="text-2xl font-extrabold text-slate-900 font-heading tracking-tight flex items-center gap-3">
-          <Users className="h-6 w-6 text-blue-600" />
-          Executive Leadership & Board Connections
-        </h1>
-        <p className="text-xs text-slate-500 mt-1">
-          Board of directors tracking, beneficial ownership, and PEP sanction screening.
-        </p>
+    <div className="space-y-6 font-sans">
+      {/* Header Banner */}
+      <div className="clay-panel p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-extrabold text-[#1E293B] font-heading tracking-tight flex items-center gap-3">
+              <Users className="h-6 w-6 text-[#3B82F6]" />
+              Executive Leadership & Board Directory
+            </h1>
+            <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-3 py-1 rounded-full">
+              PEP & Sanctions Screened
+            </span>
+          </div>
+          <p className="text-xs text-[#64748B] mt-1.5 leading-relaxed">
+            Board of directors tracking, beneficial ownership percentage, and Politically Exposed Persons (PEP) screening.
+          </p>
+        </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden divide-y divide-slate-100">
-        {executives.map((e, idx) => (
-          <div key={idx} className="p-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-xs font-mono">
-            <div>
-              <span className="font-bold text-slate-900 text-sm block font-heading">{e.name}</span>
-              <span className="text-slate-500 text-xs">{e.title} — <strong className="text-slate-800">{e.company}</strong></span>
+      <div className="clay-card p-6 space-y-3">
+        <div className="space-y-3">
+          {executives.map((e, idx) => (
+            <div key={idx} className="p-4 rounded-[16px] bg-[#F4F9FF] border border-[#DCE7F5] flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
+              <div>
+                <span className="font-extrabold text-sm text-[#1E293B] block font-heading">{e.name}</span>
+                <span className="text-[#64748B] text-xs font-sans">{e.title} — <strong className="text-[#1E293B]">{e.company}</strong></span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-[#64748B]">Equity: <strong className="text-[#1E293B]">{e.holdings}</strong></span>
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                  e.status === 'Clear' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
+                }`}>
+                  {e.status}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-slate-600">Equity: <strong className="text-slate-900">{e.holdings}</strong></span>
-              <Badge variant={e.status === 'Clear' ? 'low' : 'medium'}>{e.status}</Badge>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

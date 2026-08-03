@@ -98,12 +98,12 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-slate-900 flex flex-col font-sans bg-slate-50">
+    <div className="min-h-screen text-[#1E293B] flex flex-col font-sans bg-[#F7FAFC] p-3 gap-3 max-w-[1800px] mx-auto">
       <Navbar onOpenNewScan={() => setIsScanModalOpen(true)} onSearch={handleSearch} />
 
-      <div className="flex-1 flex">
+      <div className="flex-1 flex gap-4 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-slate-50">
+        <main className="flex-1 overflow-y-auto pr-1">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/workspace/:id" element={<CompanyWorkspace />} />

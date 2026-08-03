@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import { 
   FolderOpen, 
   Plus, 
-  Clock, 
   User, 
-  ShieldAlert, 
-  CheckCircle2, 
   FileText, 
-  ExternalLink,
   ChevronRight,
   Filter,
-  Search
+  Search,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
-import { Badge } from '../components/ui/Badge';
-import { Button } from '../components/ui/Button';
 
 interface CaseItem {
   id: string;
@@ -60,49 +56,50 @@ export const CaseManagementPage: React.FC = () => {
     }
   ]);
 
-  const columns: { key: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED'; label: string; color: string }[] = [
-    { key: 'OPEN', label: 'Open Investigations', color: 'border-rose-500' },
-    { key: 'IN_PROGRESS', label: 'In Progress / Peer Review', color: 'border-amber-500' },
-    { key: 'RESOLVED', label: 'Resolved & Attested', color: 'border-emerald-500' }
+  const columns: { key: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED'; label: string; dotColor: string }[] = [
+    { key: 'OPEN', label: 'Open Investigations', dotColor: 'bg-rose-500' },
+    { key: 'IN_PROGRESS', label: 'In Progress / Peer Review', dotColor: 'bg-amber-500' },
+    { key: 'RESOLVED', label: 'Resolved & Attested', dotColor: 'bg-emerald-500' }
   ];
 
   return (
-    <div className="p-8 space-y-8 max-w-[1600px] mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+    <div className="space-y-6 font-sans">
+      {/* Header Banner */}
+      <div className="clay-panel p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight font-heading flex items-center gap-3">
-              <FolderOpen className="h-6 w-6 text-blue-600" />
+            <h1 className="text-2xl font-extrabold text-[#1E293B] tracking-tight font-heading flex items-center gap-3">
+              <FolderOpen className="h-6 w-6 text-[#3B82F6]" />
               Investigation & Case Management Board
             </h1>
-            <Badge variant="cyan">ISO/IEC 27037 Audited</Badge>
+            <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-3 py-1 rounded-full">
+              ISO/IEC 27037 Audited
+            </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#64748B] mt-1.5 leading-relaxed">
             Kanban workflow for compliance adjudication, peer review approvals, and evidentiary sign-offs.
           </p>
         </div>
 
-        <Button
-          variant="primary"
-          leftIcon={<Plus className="w-4 h-4 stroke-[3]" />}
-        >
+        <button className="clay-button-primary px-5 py-2.5 text-xs flex items-center gap-2 font-bold shrink-0">
+          <Plus className="w-4 h-4 stroke-[3]" />
           + Initiate Investigation Case
-        </Button>
+        </button>
       </div>
 
-      {/* Kanban Board Layout */}
+      {/* Kanban Board Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {columns.map((col) => {
           const colCases = cases.filter((c) => c.status === col.key);
           return (
-            <div key={col.key} className="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-4 min-h-[600px] flex flex-col">
-              {/* Column Title Header */}
-              <div className={`flex items-center justify-between p-3 bg-white rounded-xl border-l-4 ${col.color} border border-slate-200 shadow-sm`}>
-                <span className="font-extrabold text-xs text-slate-900 uppercase tracking-wide font-heading">
+            <div key={col.key} className="bg-[#F4F9FF] p-4 rounded-[24px] border border-[#DCE7F5] space-y-4 min-h-[600px] flex flex-col shadow-inner">
+              {/* Column Header */}
+              <div className="flex items-center justify-between p-3.5 bg-white rounded-[16px] border border-[#DCE7F5] shadow-sm">
+                <span className="font-extrabold text-xs text-[#1E293B] uppercase tracking-wide font-heading flex items-center gap-2">
+                  <span className={`w-2.5 h-2.5 rounded-full ${col.dotColor}`} />
                   {col.label}
                 </span>
-                <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">
+                <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] px-2.5 py-0.5 rounded-full border border-[#DCE7F5]">
                   {colCases.length}
                 </span>
               </div>
@@ -112,30 +109,34 @@ export const CaseManagementPage: React.FC = () => {
                 {colCases.map((c) => (
                   <div
                     key={c.id}
-                    className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-all cursor-pointer"
+                    className="clay-card p-5 space-y-3 hover:translate-y-[-2px] transition-transform cursor-pointer"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-extrabold text-blue-600">{c.id}</span>
-                      <Badge variant={c.priority === 'CRITICAL' ? 'critical' : c.priority === 'HIGH' ? 'medium' : 'low'}>
+                      <span className="text-xs font-mono font-extrabold text-[#3B82F6]">{c.id}</span>
+                      <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                        c.priority === 'CRITICAL' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
+                        c.priority === 'HIGH' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
+                        'bg-amber-50 text-amber-700 border border-amber-200'
+                      }`}>
                         {c.priority}
-                      </Badge>
+                      </span>
                     </div>
 
-                    <h4 className="font-extrabold text-sm text-slate-900 font-heading leading-snug">
+                    <h4 className="font-extrabold text-sm text-[#1E293B] font-heading leading-snug">
                       {c.title}
                     </h4>
 
-                    <div className="text-xs text-slate-600 font-sans">
-                      Target Entity: <strong className="text-slate-900">{c.target_company}</strong>
+                    <div className="text-xs text-[#64748B] font-sans">
+                      Target Entity: <strong className="text-[#1E293B]">{c.target_company}</strong>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
-                      <span className="flex items-center gap-1.5 text-slate-700 font-bold">
-                        <User className="w-3.5 h-3.5 text-blue-600" />
+                    <div className="pt-3 border-t border-[#EEF6FF] flex items-center justify-between text-xs font-mono text-[#64748B]">
+                      <span className="flex items-center gap-1.5 text-[#1E293B] font-bold">
+                        <User className="w-3.5 h-3.5 text-[#3B82F6]" />
                         {c.assignee}
                       </span>
                       <span className="flex items-center gap-1">
-                        <FileText className="w-3.5 h-3.5 text-slate-400" />
+                        <FileText className="w-3.5 h-3.5 text-[#94A3B8]" />
                         {c.evidence_count} Artifacts
                       </span>
                     </div>

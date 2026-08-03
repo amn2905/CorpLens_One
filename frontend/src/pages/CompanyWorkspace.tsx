@@ -199,28 +199,28 @@ This document details data protection practices, lawful bases for processing und
   ];
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
+    <div className="space-y-6 font-sans">
       {/* ─────────────────────────────────────────────────────────────
-          1. HEADER PROFILE CARD - Clean Light Theme
+          1. HEADER PROFILE CARD - Soft Clay Design
       ───────────────────────────────────────────────────────────── */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+      <div className="clay-panel p-6 bg-white space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
-            <div className="h-14 w-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-2xl shadow-sm">
+            <div className="h-14 w-14 rounded-[16px] bg-[#3B82F6] text-white flex items-center justify-center font-black text-2xl shadow-sm">
               {company.name.charAt(0)}
             </div>
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight font-heading">
+                <h1 className="text-2xl font-extrabold text-[#1E293B] tracking-tight font-heading">
                   {company.name}
                 </h1>
                 <RiskBadge score={company.risk_score} tier={company.risk_tier} size="md" />
-                <span className="text-[10px] bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded font-mono font-bold uppercase tracking-wider">
-                  CorpLens One Intelligence
+                <span className="text-[10px] bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-2.5 py-0.5 rounded-full font-mono font-bold uppercase tracking-wider">
+                  CorpLens One Target
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2 font-mono">
-                <span className="flex items-center gap-1.5 text-blue-600 font-bold">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-[#64748B] mt-2 font-mono">
+                <span className="flex items-center gap-1.5 text-[#3B82F6] font-bold">
                   <Globe className="h-4 w-4" />
                   {company.primary_domain}
                 </span>
@@ -229,69 +229,69 @@ This document details data protection practices, lawful bases for processing und
                 <span>•</span>
                 <span>{company.country || 'United States'}</span>
                 <span>•</span>
-                <span className="text-slate-400">Scan Date: {new Date(company.last_scanned || Date.now()).toLocaleDateString()}</span>
+                <span className="text-[#94A3B8]">Scan Date: {new Date(company.last_scanned || Date.now()).toLocaleDateString()}</span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant="primary"
+          <div className="flex flex-wrap items-center gap-3">
+            <button
               onClick={() => {
                 const url = api.getReportDownloadUrl(company.id, 'pdf');
                 api.downloadFile(url, `CorpLens_Executive_Brief_${company.primary_domain}.pdf`);
               }}
-              leftIcon={<Download className="h-4 w-4" />}
+              className="clay-button-primary px-4 py-2.5 text-xs flex items-center gap-2"
             >
-              Export Brief (PDF)
-            </Button>
-            <Button
-              variant="outline"
+              <Download className="h-4 w-4" />
+              Export Executive Brief (PDF)
+            </button>
+            <button
               onClick={() => {
                 const url = api.getReportDownloadUrl(company.id, 'json');
                 api.downloadFile(url, `CorpLens_Intelligence_${company.primary_domain}.json`);
               }}
-              leftIcon={<Download className="h-4 w-4 text-slate-500" />}
+              className="clay-button-secondary px-4 py-2.5 text-xs flex items-center gap-2"
             >
-              JSON Data
-            </Button>
+              <Download className="h-4 w-4 text-[#3B82F6]" />
+              JSON Telemetry
+            </button>
           </div>
         </div>
 
         {/* 4-Pillar Risk Scores Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <div className="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider font-mono">Infrastructure Risk</div>
-            <div className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{risk.infrastructure_score} <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-[#EEF6FF]">
+          <div className="bg-[#F4F9FF] p-4 rounded-[16px] border border-[#DCE7F5]">
+            <div className="text-[10px] text-[#64748B] font-extrabold uppercase tracking-wider font-mono">Infrastructure Risk</div>
+            <div className="text-xl font-extrabold text-[#1E293B] mt-1 font-mono">{risk.infrastructure_score} <span className="text-xs text-[#94A3B8] font-normal">/ 100</span></div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <div className="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider font-mono">Tech Vulnerabilities</div>
-            <div className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{risk.technology_score} <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+          <div className="bg-[#F4F9FF] p-4 rounded-[16px] border border-[#DCE7F5]">
+            <div className="text-[10px] text-[#64748B] font-extrabold uppercase tracking-wider font-mono">Tech Vulnerabilities</div>
+            <div className="text-xl font-extrabold text-[#1E293B] mt-1 font-mono">{risk.technology_score} <span className="text-xs text-[#94A3B8] font-normal">/ 100</span></div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <div className="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider font-mono">Reputation Signals</div>
-            <div className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{risk.reputation_score} <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+          <div className="bg-[#F4F9FF] p-4 rounded-[16px] border border-[#DCE7F5]">
+            <div className="text-[10px] text-[#64748B] font-extrabold uppercase tracking-wider font-mono">Reputation Signals</div>
+            <div className="text-xl font-extrabold text-[#1E293B] mt-1 font-mono">{risk.reputation_score} <span className="text-xs text-[#94A3B8] font-normal">/ 100</span></div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <div className="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider font-mono">Compliance & Sanctions</div>
-            <div className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{risk.compliance_score} <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+          <div className="bg-[#F4F9FF] p-4 rounded-[16px] border border-[#DCE7F5]">
+            <div className="text-[10px] text-[#64748B] font-extrabold uppercase tracking-wider font-mono">Compliance & Sanctions</div>
+            <div className="text-xl font-extrabold text-[#1E293B] mt-1 font-mono">{risk.compliance_score} <span className="text-xs text-[#94A3B8] font-normal">/ 100</span></div>
           </div>
         </div>
 
         {/* AI Executive Intelligence Summary */}
-        <div className="bg-blue-50/80 border border-blue-200 p-4 rounded-xl flex items-start gap-3">
-          <Bot className="h-5 w-5 text-blue-600 mt-0.5 shrink-0" />
-          <div className="text-xs text-slate-800 leading-relaxed font-sans">
-            <span className="font-bold text-blue-600 mr-1.5 uppercase tracking-wider">AI Executive Intelligence Summary:</span>
+        <div className="bg-[#EEF6FF] border border-[#DCE7F5] p-4 rounded-[16px] flex items-start gap-3">
+          <Bot className="h-5 w-5 text-[#3B82F6] mt-0.5 shrink-0" />
+          <div className="text-xs text-[#1E293B] leading-relaxed font-sans">
+            <span className="font-bold text-[#3B82F6] mr-1.5 uppercase tracking-wider font-heading">AI Executive Intelligence Summary:</span>
             {risk.ai_summary}
           </div>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. MODULE NAVIGATION TABS - White Responsive Pill Design
+          2. MODULE NAVIGATION TABS - Soft Clay Pill Design
       ───────────────────────────────────────────────────────────── */}
-      <div className="border-b border-slate-200 flex items-center gap-2 overflow-x-auto pb-px bg-white p-2 rounded-xl shadow-sm">
+      <div className="clay-card p-2 flex items-center gap-2 overflow-x-auto">
         {[
           { id: 'footprint', label: 'Digital Footprint & DNS', icon: Globe },
           { id: 'tech', label: 'Tech Stack Intelligence', icon: Cpu },
@@ -306,10 +306,10 @@ This document details data protection practices, lawful bases for processing und
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap uppercase tracking-wider ${
+              className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-[14px] transition-all whitespace-nowrap tracking-wide font-heading ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  ? 'bg-[#3B82F6] text-white shadow-sm'
+                  : 'text-[#64748B] hover:text-[#1E293B] hover:bg-[#EEF6FF]'
               }`}
             >
               <Icon className="h-4 w-4" />

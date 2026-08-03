@@ -1,25 +1,29 @@
 import React from 'react';
-import { Network } from 'lucide-react';
+import { Network, Share2, Layers } from 'lucide-react';
 import { GraphExplorer } from '../components/GraphExplorer';
-import { Badge } from '../components/ui/Badge';
 
 export const GraphPage: React.FC = () => {
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
-      <div className="border-b border-slate-200 pb-5">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-extrabold text-slate-900 font-heading tracking-tight flex items-center gap-3">
-            <Network className="h-6 w-6 text-blue-600" />
-            Graph Relationship Topology Sandbox
-          </h1>
-          <Badge variant="cyan">Neo4j Cypher 5.18</Badge>
+    <div className="space-y-6 font-sans">
+      {/* Header Banner */}
+      <div className="clay-panel p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-extrabold text-[#1E293B] font-heading tracking-tight flex items-center gap-3">
+              <Network className="h-6 w-6 text-[#3B82F6]" />
+              Knowledge Graph & Entity Topology
+            </h1>
+            <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-3 py-1 rounded-full">
+              Neo4j v5.18 Engine
+            </span>
+          </div>
+          <p className="text-xs text-[#64748B] mt-1.5 leading-relaxed">
+            Cytoscape.js force-directed topology mapping corporate subsidiary hierarchies, executive leadership, shared ASN infrastructure, and CVE exposure.
+          </p>
         </div>
-        <p className="text-xs text-slate-500 mt-1">
-          Cytoscape.js canvas mapping corporate parent-subsidiary trees, board connections, and shared IP infrastructure.
-        </p>
       </div>
 
-      <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm min-h-[500px]">
+      <div className="clay-panel p-4 min-h-[600px] bg-white">
         <GraphExplorer companyId="cmp-001" />
       </div>
     </div>

@@ -8,109 +8,83 @@ import {
 
 interface NavItem { to: string; label: string; icon: React.FC<{className?: string}>; }
 
-const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
-  {
-    title: 'Core Platform',
-    items: [
-      { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/workspace/cmp-001', label: 'Companies', icon: Building2 },
-      { to: '/ai-assistant', label: 'CorpLens AI', icon: Bot },
-    ]
-  },
-  {
-    title: 'Risk & Operations',
-    items: [
-      { to: '/cases', label: 'Investigations', icon: FolderOpen },
-      { to: '/sanctions', label: 'Compliance', icon: ShieldAlert },
-      { to: '/tprm', label: 'Third Party Risk', icon: Briefcase },
-      { to: '/supply-chain', label: 'Supply Chain', icon: GitBranch },
-      { to: '/threat-intel', label: 'Threat Intelligence', icon: Rss },
-    ]
-  },
-  {
-    title: 'Analytics & Graph',
-    items: [
-      { to: '/graph', label: 'Knowledge Graph', icon: Network },
-      { to: '/monitoring', label: 'Monitoring', icon: Bell },
-      { to: '/analytics', label: 'Reports', icon: BarChart3 },
-    ]
-  },
-  {
-    title: 'Governance',
-    items: [
-      { to: '/integrations', label: 'Settings', icon: Share2 },
-      { to: '/admin', label: 'Administration', icon: Settings },
-    ]
-  }
+const NAV_ITEMS: NavItem[] = [
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/workspace/cmp-001', label: 'Companies', icon: Building2 },
+  { to: '/ai-assistant', label: 'CorpLens AI', icon: Bot },
+  { to: '/cases', label: 'Investigations', icon: FolderOpen },
+  { to: '/sanctions', label: 'Compliance', icon: ShieldAlert },
+  { to: '/tprm', label: 'Third Party Risk', icon: Briefcase },
+  { to: '/supply-chain', label: 'Supply Chain', icon: GitBranch },
+  { to: '/threat-intel', label: 'Threat Intelligence', icon: Rss },
+  { to: '/graph', label: 'Knowledge Graph', icon: Network },
+  { to: '/analytics', label: 'Reports', icon: BarChart3 },
+  { to: '/monitoring', label: 'Monitoring', icon: Bell },
+  { to: '/integrations', label: 'Settings', icon: Share2 },
+  { to: '/admin', label: 'Admin', icon: Settings },
 ];
 
 export const Sidebar: React.FC = () => {
   return (
-    <aside className="w-60 shrink-0 flex flex-col justify-between h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto bg-white border-r border-slate-200">
-      <div className="p-3 space-y-4">
-        {NAV_SECTIONS.map((section) => (
-          <div key={section.title}>
-            {/* Section header */}
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-1.5 font-mono">
-              {section.title}
-            </div>
-            <div className="space-y-0.5">
-              {section.items.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    end={item.to === '/'}
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all relative group ${
-                        isActive
-                          ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600'
-                          : 'text-slate-600 font-medium hover:text-slate-900 hover:bg-slate-100'
-                      }`
-                    }
-                  >
-                    {({ isActive }) => (
-                      <>
-                        <Icon className={`h-4 w-4 shrink-0 ${isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
-                        <span>{item.label}</span>
-                        {isActive && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600 shrink-0" />
-                        )}
-                      </>
+    <aside className="w-64 shrink-0 flex flex-col justify-between h-[calc(100vh-5.5rem)] sticky top-20 bg-[#F4F9FF] border border-[#DCE7F5] rounded-[24px] shadow-[0_6px_18px_rgba(120,160,210,0.12)] p-3.5 font-sans overflow-y-auto">
+      <div className="space-y-1">
+        <div className="text-[10px] font-extrabold text-[#64748B] uppercase tracking-wider px-3 mb-2 font-heading">
+          Platform OS
+        </div>
+        <nav className="space-y-1">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3.5 py-2.5 rounded-[14px] text-xs transition-all relative group font-medium ${
+                    isActive
+                      ? 'bg-[#EEF6FF] text-[#3B82F6] font-extrabold border border-[#DCE7F5] shadow-sm'
+                      : 'text-[#64748B] hover:text-[#1E293B] hover:bg-[#EEF6FF]/60'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {/* Animated Left Selected Pill Indicator */}
+                    {isActive && (
+                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-[#3B82F6] rounded-r-full animate-pulse" />
                     )}
-                  </NavLink>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+                    <Icon className={`h-4 w-4 shrink-0 transition-colors ${isActive ? 'text-[#3B82F6]' : 'text-[#94A3B8] group-hover:text-[#3B82F6]'}`} />
+                    <span className="truncate">{item.label}</span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
       </div>
 
-      {/* Bottom Status */}
-      <div className="p-4 border-t" style={{ borderColor: 'rgba(37, 99, 235, 0.15)' }}>
-        <div className="p-3 rounded-xl text-xs space-y-2" style={{
-          background: 'rgba(3, 9, 30, 0.85)',
-          border: '1px solid rgba(37, 99, 235, 0.18)'
-        }}>
-          <div className="flex items-center justify-between font-extrabold text-[11px] uppercase tracking-wider text-blue-100">
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
-              Security
+      {/* Security Status Box */}
+      <div className="pt-3 border-t border-[#DCE7F5] mt-4">
+        <div className="p-3.5 rounded-[16px] bg-white border border-[#DCE7F5] shadow-[0_4px_12px_rgba(120,160,210,0.10)] space-y-2">
+          <div className="flex items-center justify-between font-bold text-[11px] text-[#1E293B]">
+            <span className="flex items-center gap-1.5 font-heading">
+              <ShieldCheck className="h-4 w-4 text-[#3B82F6]" />
+              System Status
             </span>
-            <span className="text-[8px] text-white bg-blue-600 px-1.5 py-0.5 rounded font-black tracking-wider uppercase" style={{ boxShadow: '0 0 8px rgba(37,99,235,0.5)' }}>
+            <span className="text-[9px] text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
               Active
             </span>
           </div>
-          <div className="space-y-0.5 text-[9px] font-mono" style={{ color: 'rgba(147, 197, 253, 0.40)' }}>
-            <div>SAML 2.0 / SCIM Enabled</div>
-            <div>STIX 2.1 SIEM Export Ready</div>
-            <div>RLS Row-Level Isolation ON</div>
+          <div className="space-y-1 text-[10px] text-[#64748B] font-mono">
+            <div className="flex items-center justify-between">
+              <span>RLS Multi-Tenant:</span>
+              <span className="font-bold text-[#1E293B]">ON</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>ISO 27037 Digest:</span>
+              <span className="font-bold text-[#1E293B]">SHA-256</span>
+            </div>
           </div>
-        </div>
-
-        <div className="text-[9px] font-mono text-blue-800 text-center mt-2">
-          {NAV_SECTIONS.reduce((s, sec) => s + sec.items.length, 0)} modules active
         </div>
       </div>
     </aside>

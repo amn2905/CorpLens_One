@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Briefcase, Search, ExternalLink } from 'lucide-react';
+import { Briefcase, Search, ExternalLink, ShieldCheck } from 'lucide-react';
 import { mockCompanies } from '../services/api';
-import { Badge } from '../components/ui/Badge';
+import { RiskBadge } from '../components/RiskBadge';
 import { useNavigate } from 'react-router-dom';
 
 export const VendorPortfolio: React.FC = () => {
@@ -13,61 +13,78 @@ export const VendorPortfolio: React.FC = () => {
   );
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
-      {/* Header */}
-      <div className="border-b border-slate-200 pb-5">
-        <h1 className="text-2xl font-extrabold text-slate-900 font-heading tracking-tight flex items-center gap-3">
-          <Briefcase className="h-6 w-6 text-blue-600" />
-          Third-Party Vendor Risk Portfolio (TPRM Grid)
-        </h1>
-        <p className="text-xs text-slate-500 mt-1">
-          Complete vendor portfolio risk evaluation matrix, SLA monitoring, and 7-pillar vulnerability scores.
-        </p>
+    <div className="space-y-6 font-sans">
+      {/* Header Banner */}
+      <div className="clay-panel p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-extrabold text-[#1E293B] font-heading tracking-tight flex items-center gap-3">
+              <Briefcase className="h-6 w-6 text-[#3B82F6]" />
+              Third-Party Risk Management (TPRM Grid)
+            </h1>
+            <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-3 py-1 rounded-full">
+              7-Pillar Scoring
+            </span>
+          </div>
+          <p className="text-xs text-[#64748B] mt-1.5 leading-relaxed">
+            Vendor risk evaluation matrix, continuous SLA monitoring, and automated due diligence attestation.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 shrink-0 font-mono text-xs">
+          <div className="p-3 bg-[#EEF6FF] border border-[#DCE7F5] rounded-[16px] text-center">
+            <div className="text-[10px] text-[#64748B] uppercase font-bold">Total Vendors</div>
+            <div className="text-base font-black text-[#1E293B]">{filtered.length} Portfolio</div>
+          </div>
+        </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3">
-        <Search className="w-4 h-4 text-slate-400 ml-2" />
+      {/* Search Input Bar */}
+      <div className="clay-card p-4 flex items-center gap-3">
+        <Search className="w-4 h-4 text-[#94A3B8] ml-2" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search vendor portfolio by company name or domain..."
-          className="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-xs font-mono text-slate-900 outline-none focus:bg-white focus:border-blue-600 transition-all"
+          className="clay-input w-full px-4 py-2 text-xs font-mono"
         />
       </div>
 
-      {/* Portfolio Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <table className="w-full text-left text-xs font-mono">
-          <thead className="bg-slate-100 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[10px]">
+      {/* Portfolio Clay Table */}
+      <div className="clay-table-container">
+        <table className="clay-table text-left">
+          <thead>
             <tr>
-              <th className="p-4">Vendor Entity</th>
-              <th className="p-4">Domain</th>
-              <th className="p-4">Industry</th>
-              <th className="p-4">Risk Score</th>
-              <th className="p-4">Confidence</th>
-              <th className="p-4 text-right">Action</th>
+              <th>Vendor Entity</th>
+              <th>Primary Domain</th>
+              <th>Industry Sector</th>
+              <th>Risk Score Rating</th>
+              <th>Confidence</th>
+              <th className="text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {filtered.map(c => {
-              const risk = c.risk_score || 3.5;
+              const score = c.risk_score || 3.5;
               return (
-                <tr key={c.id} className="hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => navigate(`/workspace/${c.id}`)}>
-                  <td className="p-4 font-bold text-slate-900">{c.name}</td>
-                  <td className="p-4 text-blue-600">{c.primary_domain}</td>
-                  <td className="p-4 text-slate-600">{c.industry || 'Technology'}</td>
-                  <td className="p-4">
-                    <Badge variant={risk >= 7.0 ? 'critical' : risk >= 4.0 ? 'medium' : 'low'}>
-                      {risk} / 10.0
-                    </Badge>
+                <tr key={c.id} className="cursor-pointer" onClick={() => navigate(`/workspace/${c.id}`)}>
+                  <td className="font-bold text-[#1E293B] font-heading flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-[10px] bg-[#EEF6FF] text-[#3B82F6] font-extrabold text-xs flex items-center justify-center border border-[#DCE7F5]">
+                      {c.name.charAt(0)}
+                    </div>
+                    <span>{c.name}</span>
                   </td>
-                  <td className="p-4 text-emerald-600 font-bold">96%</td>
-                  <td className="p-4 text-right">
-                    <span className="text-blue-600 font-bold flex items-center justify-end gap-1">
+                  <td className="text-[#3B82F6] font-mono font-bold text-xs">{c.primary_domain}</td>
+                  <td className="text-[#64748B]">{c.industry || 'Technology'}</td>
+                  <td>
+                    <RiskBadge score={score} />
+                  </td>
+                  <td className="text-emerald-600 font-mono font-bold text-xs">98% (ISO 27037)</td>
+                  <td className="text-right">
+                    <button className="clay-button-secondary px-3 py-1.5 text-xs inline-flex items-center gap-1">
                       Profile <ExternalLink className="w-3 h-3" />
-                    </span>
+                    </button>
                   </td>
                 </tr>
               );

@@ -1,6 +1,5 @@
 import React from 'react';
-import { GitBranch, Layers, ShieldCheck, AlertTriangle, ArrowRight } from 'lucide-react';
-import { Badge } from '../components/ui/Badge';
+import { GitBranch, Layers, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export const SupplyChainPage: React.FC = () => {
   const tiers = [
@@ -25,45 +24,49 @@ export const SupplyChainPage: React.FC = () => {
   ];
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto bg-slate-50 text-slate-900 font-sans min-h-screen">
-      {/* Header */}
-      <div className="border-b border-slate-200 pb-5">
-        <div className="flex items-center gap-2.5">
-          <h1 className="text-2xl font-extrabold text-slate-900 font-heading tracking-tight flex items-center gap-3">
-            <GitBranch className="h-6 w-6 text-blue-600" />
-            Multi-Tier Supply Chain & 4th-Party Concentration
-          </h1>
-          <Badge variant="cyan">Graph Correlated</Badge>
+    <div className="space-y-6 font-sans">
+      {/* Header Banner */}
+      <div className="clay-panel p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-extrabold text-[#1E293B] font-heading tracking-tight flex items-center gap-3">
+              <GitBranch className="h-6 w-6 text-[#3B82F6]" />
+              Multi-Tier Supply Chain & 4th-Party Concentration
+            </h1>
+            <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-3 py-1 rounded-full">
+              Graph Correlated
+            </span>
+          </div>
+          <p className="text-xs text-[#64748B] mt-1.5 leading-relaxed">
+            Deep-dive 4th-party vendor dependencies, cloud concentration risk, and supply chain single-point-of-failure mapping.
+          </p>
         </div>
-        <p className="text-xs text-slate-500 mt-1">
-          Deep-dive 4th-party vendor dependencies, cloud concentration risk, and supply chain single-point-of-failure mapping.
-        </p>
       </div>
 
-      {/* Multi-tier Overview Grid */}
+      {/* Multi-tier Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {tiers.map((t, idx) => (
-          <div key={idx} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <span className="font-extrabold text-sm text-slate-900 font-heading flex items-center gap-2">
-                <Layers className="w-4 h-4 text-blue-600" />
+          <div key={idx} className="clay-card p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-[#EEF6FF] pb-3">
+              <span className="font-extrabold text-sm text-[#1E293B] font-heading flex items-center gap-2">
+                <Layers className="w-4 h-4 text-[#3B82F6]" />
                 {t.tier}
               </span>
-              <span className="text-xs font-mono font-bold bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded">
+              <span className="text-xs font-mono font-bold bg-[#EEF6FF] text-[#3B82F6] border border-[#DCE7F5] px-2.5 py-0.5 rounded-full">
                 {t.count} Suppliers
               </span>
             </div>
 
-            <div className="text-xs font-mono text-slate-600">
-              Risk Posture: <strong className="text-slate-900">{t.risk}</strong>
+            <div className="text-xs font-mono text-[#64748B]">
+              Risk Posture: <strong className="text-[#1E293B]">{t.risk}</strong>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-slate-100">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Key Monitored Suppliers</span>
+            <div className="space-y-2 pt-2 border-t border-[#EEF6FF]">
+              <span className="text-[10px] font-mono text-[#94A3B8] uppercase tracking-wider block">Key Monitored Suppliers</span>
               {t.entities.map((e, i) => (
-                <div key={i} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 flex items-center justify-between">
+                <div key={i} className="p-3 rounded-[14px] bg-[#F4F9FF] border border-[#DCE7F5] text-xs font-bold text-[#1E293B] flex items-center justify-between">
                   <span>{e}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6]" />
                 </div>
               ))}
             </div>

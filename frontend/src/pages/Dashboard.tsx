@@ -118,7 +118,7 @@ export const Dashboard: React.FC = () => {
               onClick={() => navigate('/ai-assistant')}
               leftIcon={<Activity className="w-4 h-4" />}
             >
-              Launch AI Copilot
+              Launch CorpLens AI
             </Button>
           </div>
         </div>

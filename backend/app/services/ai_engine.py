@@ -145,7 +145,7 @@ class EnterpriseAIEngine:
 
         if not citations:
             citations = [
-                {"source": "CorpLens OSINT Aggregation Engine", "type": "Public DNS / Header Scan"},
+                {"source": "CorpLens One OSINT Aggregation Engine", "type": "Public DNS / Header Scan"},
                 {"source": "NIST NVD Advisory Feed", "type": "Vulnerability Database"}
             ]
 

@@ -1,6 +1,6 @@
 # Enterprise Security & Compliance Hardening Checklist
 
-This document details the security posture and compliance enforcement controls implemented in **CorpLens AI**.
+This document details the security posture and compliance enforcement controls implemented in **CorpLens One**.
 
 ---
 

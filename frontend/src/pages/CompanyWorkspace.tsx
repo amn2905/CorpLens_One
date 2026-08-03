@@ -133,7 +133,7 @@ export const CompanyWorkspace: React.FC = () => {
       size: "1.4 MB", 
       date: "2026-03-12",
       previewText: `================================================================================
-CORPLENS AI VERIFIED PUBLIC DOCUMENT
+CORPLENS ONE VERIFIED PUBLIC DOCUMENT
 Document Title: ${company.name} - SOC 2 Type II Compliance & Security Audit
 Primary Domain: ${company.primary_domain}
 Classification: PUBLIC EXECUTIVE SUMMARY
@@ -160,7 +160,7 @@ In our opinion, in all material respects, controls were suitably designed and op
       size: "2.8 MB", 
       date: "2025-11-20",
       previewText: `================================================================================
-CORPLENS AI VERIFIED PUBLIC DOCUMENT
+CORPLENS ONE VERIFIED PUBLIC DOCUMENT
 Document Title: ${company.name} - Cybersecurity & Cloud Infrastructure Whitepaper
 Primary Domain: ${company.primary_domain}
 Classification: PUBLIC SECURITY BRIEFING
@@ -183,7 +183,7 @@ Classification: PUBLIC SECURITY BRIEFING
       size: "480 KB", 
       date: "2026-01-05",
       previewText: `================================================================================
-CORPLENS AI VERIFIED PUBLIC DOCUMENT
+CORPLENS ONE VERIFIED PUBLIC DOCUMENT
 Document Title: ${company.name} - Global Privacy Policy & GDPR / CCPA Compliance Attestation
 Primary Domain: ${company.primary_domain}
 Classification: PUBLIC LEGAL COMPLIANCE DOCUMENT

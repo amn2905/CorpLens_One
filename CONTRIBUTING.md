@@ -1,6 +1,6 @@
-# 🤝 Contributing to CorpLens AI
+# 🤝 Contributing to CorpLens One
 
-Thank you for your interest in contributing to **CorpLens AI Enterprise Edition**!
+Thank you for your interest in contributing to **CorpLens One** (The Operating System for Enterprise Intelligence)!
 
 ---
 

@@ -100,7 +100,7 @@ export const api = {
       return await res.json();
     } catch (err) {
       return {
-        answer: `CorpLens AI Copilot evaluated "${query}". Based on multi-source OSINT telemetry, tracked corporate entities maintain an average risk score of 3.9/10.0 with 0 critical sanctions matches on OFAC or EU watchlists.`,
+        answer: `CorpLens AI evaluated "${query}". Based on multi-source OSINT telemetry, tracked corporate entities maintain an average risk score of 3.9/10.0 with 0 critical sanctions matches on OFAC or EU watchlists.`,
         citations: [
           { source: 'PostgreSQL 16 Enterprise RDBMS', type: 'Primary Relational Data' },
           { source: 'Neo4j 5.18 Graph Topology Store', type: 'Relationship Topology' },
@@ -323,7 +323,7 @@ export const api = {
     } catch (err) {
       console.warn('Fallback synthetic file download triggered:', err);
       const fallbackContent = `================================================================================
-CORPLENS AI DISCOVERED PUBLIC CORPORATE DOCUMENT
+CORPLENS ONE DISCOVERED PUBLIC CORPORATE DOCUMENT
 Document Title: ${defaultFilename.replace(/_/g, ' ')}
 Digest Verification: SHA256: 8f9b2a7e1c4d9e0f2a3b4c5d6e7f8a9b
 Status: VERIFIED OFFICIAL OSINT PUBLIC ATTESTATION
@@ -339,7 +339,7 @@ Status: VERIFIED OFFICIAL OSINT PUBLIC ATTESTATION
 Controls evaluated were suitably designed and operated effectively throughout the audit period.
 
 Signed,
-CorpLens AI Lawful Public OSINT Aggregation Engine
+CorpLens One Lawful Public OSINT Aggregation Engine
 Date: 2026-07-22`;
 
       const fallbackBlob = new Blob([fallbackContent], { type: 'text/plain;charset=utf-8' });

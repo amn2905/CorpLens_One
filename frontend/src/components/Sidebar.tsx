@@ -10,44 +10,36 @@ interface NavItem { to: string; label: string; icon: React.FC<{className?: strin
 
 const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   {
-    title: 'Core Intelligence',
+    title: 'Core Platform',
     items: [
       { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/workspace/cmp-001', label: 'Company Intelligence', icon: Building2 },
-      { to: '/analytics', label: 'Risk Analytics', icon: BarChart3 },
+      { to: '/workspace/cmp-001', label: 'Companies', icon: Building2 },
+      { to: '/ai-assistant', label: 'CorpLens AI', icon: Bot },
     ]
   },
   {
-    title: 'Investigation',
+    title: 'Risk & Operations',
     items: [
-      { to: '/cases', label: 'Case Management', icon: FolderOpen },
-      { to: '/timeline', label: 'OSINT Timeline', icon: Clock },
-      { to: '/graph', label: 'Graph Explorer', icon: Network },
-      { to: '/ai-assistant', label: 'AI Copilot', icon: Bot },
-    ]
-  },
-  {
-    title: 'Risk & Compliance',
-    items: [
-      { to: '/sanctions', label: 'Sanctions Screening', icon: ShieldAlert },
-      { to: '/threat-intel', label: 'Threat Intelligence', icon: Rss },
-      { to: '/tprm', label: 'Vendor TPRM', icon: Briefcase },
-      { to: '/monitoring', label: 'Live Monitoring', icon: Bell },
-    ]
-  },
-  {
-    title: 'Enterprise Tools',
-    items: [
-      { to: '/executives', label: 'Executive Intel', icon: Users },
+      { to: '/cases', label: 'Investigations', icon: FolderOpen },
+      { to: '/sanctions', label: 'Compliance', icon: ShieldAlert },
+      { to: '/tprm', label: 'Third Party Risk', icon: Briefcase },
       { to: '/supply-chain', label: 'Supply Chain', icon: GitBranch },
-      { to: '/tasks', label: 'Tasks & Approvals', icon: CheckSquare },
-      { to: '/integrations', label: 'Integrations', icon: Share2 },
+      { to: '/threat-intel', label: 'Threat Intelligence', icon: Rss },
     ]
   },
   {
-    title: 'Admin',
+    title: 'Analytics & Graph',
     items: [
-      { to: '/admin', label: 'Enterprise Admin', icon: Settings },
+      { to: '/graph', label: 'Knowledge Graph', icon: Network },
+      { to: '/monitoring', label: 'Monitoring', icon: Bell },
+      { to: '/analytics', label: 'Reports', icon: BarChart3 },
+    ]
+  },
+  {
+    title: 'Governance',
+    items: [
+      { to: '/integrations', label: 'Settings', icon: Share2 },
+      { to: '/admin', label: 'Administration', icon: Settings },
     ]
   }
 ];

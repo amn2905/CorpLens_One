@@ -49,11 +49,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenNewScan, onSearch }) => {
                 CorpLens One
               </span>
               <span className="text-[9px] bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded-md font-mono font-bold uppercase tracking-wider">
-                AI-Powered Corporate Intelligence Platform
+                v1.0.0
               </span>
             </div>
             <span className="text-[11px] text-slate-600 font-bold block -mt-0.5 font-sans hidden xl:block">
-              Smarter Intelligence. Better Decisions.
+              The Operating System for Enterprise Intelligence
             </span>
           </div>
         </div>

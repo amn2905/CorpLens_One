@@ -9,7 +9,7 @@ def test_root_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "OPERATIONAL"
-    assert "CorpLens AI" in data["platform"]
+    assert "CorpLens One" in data["platform"]
 
 def test_health_check():
     response = client.get("/health")

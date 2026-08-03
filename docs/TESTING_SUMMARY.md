@@ -1,20 +1,31 @@
-# CorpLens AI v3.0 — Testing Summary
+# CorpLens One v1.0.0 — Testing & Verification Summary
 
 ## Automated Test Results
 
-### Test Suite Execution
+### Backend Pytest Execution
 - **Framework**: Pytest 9.0.3 with FastAPI TestClient
-- **Total Tests**: 18
-- **Passed**: 18 (100% Success)
-- **Execution Time**: 0.78 seconds
+- **Total Tests**: 22
+- **Passed**: 22 (100% Pass Rate)
+- **Deprecation Warnings**: 0
+- **Execution Time**: 1.64 seconds
 
-### Coverage Summary
-- **API Endpoints**: Root, Health Check, Companies List, Company Detail, AI Copilot Chat, CVE Search, Case Management, Admin Readiness Probes.
-- **Services**: 7-Pillar Risk Engine, Neo4j Graph Topology, OSINT Timeline Service, Analytics Aggregator, HTML/PDF Report Generator.
-- **Security & Admin**: Audit Log Recording, API Key Generation, Health Probes, STIX 2.1 Exporter.
+### Frontend Build Verification
+- **Framework**: TypeScript 5.2 & Vite 5.4
+- **Command**: `npm run build && npx tsc --noEmit`
+- **Errors / Warnings**: 0 Errors, 0 Warnings
+- **Build Output**: Production bundle generated in `dist/`
+
+### Test Files Breakdown
+1. `tests/test_api.py`: Endpoint routing, root metadata, health probes, AI chat, cases, admin health.
+2. `tests/test_persistence.py`: DB seeding fallback, RAG context retrieval, graph centrality, PDF report generation.
+3. `tests/test_reporting.py`: Admin audit logs, API key generation, health probes, Jira integration, STIX 2.1 exporter.
+4. `tests/test_risk_engine.py`: 7-Pillar calculation engine, graph topology, OSINT timeline, analytics summary, HTML report generation.
 
 ### Run Tests Command
 ```bash
-cd backend
-pytest -v
+# Backend Tests
+cd backend && pytest
+
+# Frontend Build & TypeCheck
+cd frontend && npm run build
 ```

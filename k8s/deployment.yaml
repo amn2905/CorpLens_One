@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: corplens/backend:v3.0.0
+        image: corplens/backend:v1.0.0
         ports:
         - containerPort: 8000
         env:

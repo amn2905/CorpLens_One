@@ -2,7 +2,7 @@ import io
 import json
 import csv
 import hashlib
-import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 
 class AdvancedReportGeneratorService:
@@ -80,21 +80,12 @@ class AdvancedReportGeneratorService:
                 textColor=colors.HexColor('#334155')
             )
 
-            mono_style = ParagraphStyle(
-                'DocMono',
-                parent=styles['Normal'],
-                fontName='Courier',
-                fontSize=8,
-                leading=10,
-                textColor=colors.HexColor('#0F172A')
-            )
-
             # Metadata & Cryptographic Evidence Computation
             name = company_data.get("name", "Target Entity")
             domain = company_data.get("primary_domain", "target.com")
             risk_score = company_data.get("risk_score", 3.9)
             risk_tier = company_data.get("risk_tier", "Low")
-            timestamp_utc = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+            timestamp_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
             # Calculate SHA-256 & SHA-512 hashes of raw company telemetry
             raw_bytes = json.dumps(company_data, sort_keys=True, default=str).encode('utf-8')
@@ -107,8 +98,8 @@ class AdvancedReportGeneratorService:
             story.append(Paragraph("<b>CONFIDENTIAL // LAWFUL OSINT EVIDENTIARY REPORT // STRICTLY PROPRIETARY</b>", classification_style))
             story.append(Spacer(1, 6))
 
-            story.append(Paragraph(f"CORPLENS ONE — AI-POWERED CORPORATE INTELLIGENCE PLATFORM", subtitle_style))
-            story.append(Paragraph(f"<i>Smarter Intelligence. Better Decisions.</i>", body_style))
+            story.append(Paragraph(f"CORPLENS ONE — ENTERPRISE INTELLIGENCE PLATFORM", subtitle_style))
+            story.append(Paragraph(f"<i>The Operating System for Enterprise Intelligence</i>", body_style))
             story.append(Spacer(1, 4))
             story.append(Paragraph(f"<b>{title.upper()}</b>", title_style))
             story.append(Paragraph(f"Target Entity: <b>{name}</b> ({domain}) &nbsp;|&nbsp; Evidentiary Reference: <b>EVID-{hash256_short(sha256_hash)}</b>", body_style))
@@ -123,7 +114,7 @@ class AdvancedReportGeneratorService:
             coc_table_data = [
                 ["Chain of Custody Field", "Audit Telemetry Value"],
                 ["Acquisition Timestamp", timestamp_utc],
-                ["Collection Subsystem", "CorpLens Passive OSINT Telemetry Engine (Non-Intrusive Public Telemetry)"],
+                ["Collection Subsystem", "CorpLens One Passive OSINT Telemetry Engine (Non-Intrusive Public Telemetry)"],
                 ["Evidentiary Compliance", "ISO/IEC 27037:2012 Digital Evidence Handling Standard"],
                 ["Payload SHA-256 Digest", sha256_hash],
                 ["Payload SHA-512 Digest", sha512_hash],
@@ -154,7 +145,7 @@ class AdvancedReportGeneratorService:
             story.append(Paragraph("<b>2. EXECUTIVE SUMMARY & 7-PILLAR COMPOSITE RISK METRIC</b>", header_style))
 
             risk_summary = company_data.get("risk_breakdown", {}).get("ai_summary", "Automated passive OSINT assessment complete. Zero active sanctions matches detected on OFAC SDN watchlists.")
-            story.append(Paragraph(f"<b>AI Executive Intelligence Briefing:</b> {risk_summary}", body_style))
+            story.append(Paragraph(f"<b>CorpLens AI Intelligence Briefing:</b> {risk_summary}", body_style))
             story.append(Spacer(1, 8))
 
             pillar_data = [
@@ -234,16 +225,16 @@ class AdvancedReportGeneratorService:
             story.append(Spacer(1, 14))
 
             story.append(HRFlowable(width="100%", thickness=0.5, color=colors.HexColor('#94A3B8'), spaceAfter=8))
-            story.append(Paragraph(f"<b>Confidentiality Notice:</b> This report contains verified forensic OSINT digital evidence. Ingested data SHA-256 digest: <code>{sha256_hash}</code>. Generated automatically by CorpLens AI Enterprise Operating System on {timestamp_utc}.", body_style))
+            story.append(Paragraph(f"<b>Confidentiality Notice:</b> This report contains verified forensic OSINT digital evidence. Ingested data SHA-256 digest: <code>{sha256_hash}</code>. Generated automatically by CorpLens One Enterprise Platform on {timestamp_utc}.", body_style))
 
             doc.build(story)
             return buffer.getvalue()
 
-        except Exception as e:
+        except Exception:
             # Fallback formatting
             raw_bytes = json.dumps(company_data, sort_keys=True, default=str).encode('utf-8')
             sha256_hash = hashlib.sha256(raw_bytes).hexdigest()
-            content = f"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj 3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj 4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj 5 0 obj<</Length 200>>stream\nBT /F1 14 Tf 50 720 Td (CORPLENS AI FORENSIC EVIDENTIARY REPORT) Tj /F1 10 Tf 0 -20 Td (Target: {company_data.get('name', 'Entity')} | Domain: {company_data.get('primary_domain', 'N/A')}) Tj 0 -20 Td (SHA256 Digest: {sha256_hash}) Tj ET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n0000000111 00000 n\n0000000238 00000 n\n0000000305 00000 n\ntrailer<</Size 6/Root 1 0 R>>\nstartxref\n478\n%%EOF"
+            content = f"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj 3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj 4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj 5 0 obj<</Length 200>>stream\nBT /F1 14 Tf 50 720 Td (CORPLENS ONE FORENSIC EVIDENTIARY REPORT) Tj /F1 10 Tf 0 -20 Td (Target: {company_data.get('name', 'Entity')} | Domain: {company_data.get('primary_domain', 'N/A')}) Tj 0 -20 Td (SHA256 Digest: {sha256_hash}) Tj ET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n0000000111 00000 n\n0000000238 00000 n\n0000000305 00000 n\ntrailer<</Size 6/Root 1 0 R>>\nstartxref\n478\n%%EOF"
             return content.encode("latin1")
 
     def generate_html_report(self, company_data: Dict[str, Any], report_type: str = "due_diligence") -> str:
@@ -253,12 +244,13 @@ class AdvancedReportGeneratorService:
         tier = company_data.get("risk_tier", "Low")
         raw_bytes = json.dumps(company_data, sort_keys=True, default=str).encode('utf-8')
         sha256_hash = hashlib.sha256(raw_bytes).hexdigest()
+        timestamp_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
         
         return f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>CorpLens AI — Evidentiary {report_type.replace('_', ' ').title()} Report</title>
+    <title>CorpLens One — Evidentiary {report_type.replace('_', ' ').title()} Report</title>
     <style>
         body {{ font-family: 'Plus Jakarta Sans', Arial, sans-serif; background: #f8fafc; color: #0f172a; padding: 40px; }}
         .card {{ background: #ffffff; border: 1px solid #e2e8f0; padding: 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
@@ -272,10 +264,10 @@ class AdvancedReportGeneratorService:
 </head>
 <body>
     <div class="card">
-        <h1>CORPLENS AI — EVIDENTIARY {report_type.replace('_', ' ').upper()} REPORT</h1>
-        <p>Target: <strong>{name}</strong> ({domain}) | Generated: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}</p>
+        <h1>CORPLENS ONE — EVIDENTIARY {report_type.replace('_', ' ').upper()} REPORT</h1>
+        <p>Target: <strong>{name}</strong> ({domain}) | Generated: {timestamp_utc}</p>
         <p>Risk Score: <span class="badge">{score} / 10.0 ({tier.upper()})</span></p>
-        <p className="mono">SHA-256 Evidence Hash: {sha256_hash}</p>
+        <p class="mono">SHA-256 Evidence Hash: {sha256_hash}</p>
     </div>
 
     <div class="card">
@@ -297,7 +289,7 @@ class AdvancedReportGeneratorService:
         raw_bytes = json.dumps(company_data, sort_keys=True, default=str).encode('utf-8')
         sha256_hash = hashlib.sha256(raw_bytes).hexdigest()
         company_data["chain_of_custody"] = {
-            "timestamp_utc": datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"),
+            "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
             "sha256_hash": sha256_hash,
             "compliance_standard": "ISO/IEC 27037:2012 Digital Evidence Custody",
             "lawful_osint_guarantee": "100% Passive Public Telemetry Ingestion"
@@ -333,7 +325,7 @@ class AdvancedReportGeneratorService:
         
         report = []
         report.append("=========================================================")
-        report.append(f"   CORPLENS AI — EVIDENTIARY {report_type.replace('_', ' ').upper()} REPORT")
+        report.append(f"   CORPLENS ONE — EVIDENTIARY {report_type.replace('_', ' ').upper()} REPORT")
         report.append("=========================================================")
         report.append(f"Target Entity: {name}")
         report.append(f"Primary Domain: {domain}")

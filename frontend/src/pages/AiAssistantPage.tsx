@@ -171,7 +171,7 @@ export const AiAssistantPage: React.FC = () => {
         <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-mono space-y-1">
           <div className="flex items-center gap-2 text-slate-900 font-bold">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            RAG Engine v3.1
+            CorpLens AI v1.0.0
           </div>
           <p className="text-[10px] text-slate-500">100% Grounded Context Ingestion Active</p>
         </div>
@@ -189,7 +189,7 @@ export const AiAssistantPage: React.FC = () => {
             </div>
             <div>
               <h2 className="text-sm font-extrabold text-slate-900 font-heading">
-                RAG Forensic Intelligence Copilot
+                CorpLens AI — Enterprise Intelligence Copilot
               </h2>
               <span className="text-[10px] font-mono text-slate-500 flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
@@ -208,7 +208,7 @@ export const AiAssistantPage: React.FC = () => {
               className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
             >
               <div className="flex items-center gap-2 mb-1.5 text-[10px] font-mono text-slate-400">
-                <span>{m.sender === 'user' ? 'Risk Analyst' : 'CorpLens RAG AI'}</span>
+                <span>{m.sender === 'user' ? 'Risk Analyst' : 'CorpLens AI'}</span>
                 <span>•</span>
                 <span>{m.timestamp}</span>
               </div>
@@ -263,7 +263,7 @@ export const AiAssistantPage: React.FC = () => {
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
-            placeholder="Ask AI Copilot (e.g. Verify OFAC sanctions status for Nexus Commercial)..."
+            placeholder="Ask CorpLens AI (e.g. Verify OFAC sanctions status for Nexus Commercial)..."
             className="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 font-mono outline-none focus:bg-white focus:border-blue-600 transition-all"
           />
           <Button
@@ -272,7 +272,7 @@ export const AiAssistantPage: React.FC = () => {
             disabled={isTyping || !inputQuery.trim()}
             leftIcon={<Send className="w-4 h-4" />}
           >
-            Query Copilot
+            Query CorpLens AI
           </Button>
         </form>
       </div>

@@ -1,23 +1,25 @@
 import time
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
 from app.api.v1 import auth, companies, search, reports, graph, ai, sanctions, analytics, integrations, admin, cve, cases
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Enterprise Corporate OSINT & Third-Party Risk Management (TPRM) Platform REST API v3.1",
+    description="Enterprise Corporate OSINT & Third-Party Risk Management (TPRM) Platform REST API v1.0.0",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
-
-# Initialize PostgreSQL Database and Seed Data
-@app.on_event("startup")
-def on_startup():
-    init_db()
 
 # CORS Configuration
 app.add_middleware(

@@ -1,14 +1,14 @@
-# 🏗️ CorpLens AI — System Architecture & Design Specification
+# 🏗️ CorpLens One — System Architecture & Design Specification
 
-> **Version**: 3.1 Enterprise Edition  
+> **Version**: 1.0.0  
 > **Classification**: Technical Architecture Blueprint  
-> **Last Updated**: July 2026  
+> **Last Updated**: August 2026  
 
 ---
 
 ## 1. Executive Summary
 
-**CorpLens AI** is an enterprise-grade Corporate Intelligence Operating System (CIOS) designed for lawful Open Source Intelligence (OSINT) aggregation, third-party vendor risk management (TPRM), M&A due diligence, sanctions screening, cyber threat intelligence correlation, and executive risk monitoring.
+**CorpLens One** is an enterprise-grade Corporate Intelligence Operating System designed for lawful Open Source Intelligence (OSINT) aggregation, third-party vendor risk management (TPRM), M&A due diligence, sanctions screening, cyber threat intelligence correlation, and executive risk monitoring.
 
 The system processes passive public telemetry (DNS records, SSL/TLS certificate transparency logs, web server response headers, public CVE advisories, and sanction registries) to synthesize real-time risk scores and relationship topographies without executing intrusive port scans or invasive penetration testing.
 
@@ -22,7 +22,7 @@ The platform follows a decoupled, cloud-native microservices architecture split 
 graph TD
     subgraph Presentation ["1. Presentation Tier (React 18 SPA)"]
         UI[React 18 + TypeScript]
-        Tailwind[Tailwind CSS Dark Theme]
+        Tailwind[Tailwind CSS Enterprise Theme]
         Cyto[Cytoscape.js Graph Engine]
         Recharts[Recharts Data Analytics]
     end
@@ -30,7 +30,7 @@ graph TD
     subgraph BusinessLogic ["2. Business Logic Tier (FastAPI Microservices)"]
         API[FastAPI Router Gateway]
         RiskEng[7-Pillar Risk Engine]
-        RAG[RAG AI Copilot Engine]
+        RAG[CorpLens AI Engine]
         ReportEng[ReportLab PDF Engine]
         GraphSvc[Neo4j Cypher Bridge]
         OSINT[Passive OSINT Connector]
@@ -61,7 +61,7 @@ graph TD
 ### 3.1 Presentation Layer (`frontend/`)
 - **Core Framework**: React 18 with TypeScript 5 strict type checking.
 - **Build System**: Vite 5 for fast hot-module replacement (HMR) and optimized bundle distribution.
-- **Design System**: Blue-black glassmorphism dark theme using Tailwind CSS v3.
+- **Design System**: Modern enterprise design system built with Tailwind CSS v3.
 - **Topology Visualizer**: `Cytoscape.js` for interactive node-edge graph exploration.
 - **State & Routing**: React Router v6 with custom authentication & RBAC route guards.
 
@@ -83,7 +83,7 @@ graph TD
 
 ## 4. 7-Pillar Risk Engine Mathematical Model
 
-CorpLens AI computes a weighted composite risk score $R_{\text{composite}}$ bounded between $0.0$ (Lowest Risk) and $10.0$ (Critical Risk):
+CorpLens One computes a weighted composite risk score $R_{\text{composite}}$ bounded between $0.0$ (Lowest Risk) and $10.0$ (Critical Risk):
 
 $$R_{\text{composite}} = \sum_{i=1}^{7} w_i \cdot P_i$$
 
@@ -101,7 +101,7 @@ Where $w_i$ represents the normalized pillar weight and $P_i$ represents the ind
 
 ---
 
-## 5. RAG AI Copilot Pipeline Workflow
+## 5. CorpLens AI Copilot Pipeline Workflow
 
 ```
 User Prompt ──► [Intent Classifier] ──► Query Category (COMPARE, SANCTIONS, CVE, etc.)
@@ -123,6 +123,6 @@ User Prompt ──► [Intent Classifier] ──► Query Category (COMPARE, SAN
 
 ## 6. High Availability & Scalability Model
 
-1. **Stateless API Gateway**: FastAPI containers are completely stateless and can be auto-scaled horiztonally behind a Kubernetes Ingress / Nginx load balancer.
-2. **Database Connection Pooling**: SQLAlchemy configured with `pool_size=10` and `max_overflow=20` to prevent connection exhaustion.
-3. **Graph Caching**: Frequent graph node queries are cached in Redis with a 5-minute Time-To-Live (TTL).
+1. **Stateless API Gateway**: FastAPI containers are completely stateless and can be auto-scaled horizontally behind a Kubernetes Ingress / Nginx load balancer.
+2. **Database Connection Pooling**: SQLAlchemy configured with connection pooling to prevent connection exhaustion.
+3. **Graph Caching**: Frequent graph node queries are cached in Redis with a TTL policy.

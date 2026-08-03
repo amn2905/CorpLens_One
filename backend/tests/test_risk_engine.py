@@ -52,5 +52,5 @@ def test_html_report_generation():
         "tech_stack": [{"technology_name": "Nginx", "category": "Web Server", "detected_version": "1.24.0"}]
     }
     html = report_generator.generate_html_report(mock_company, "due_diligence")
-    assert "CORPLENS AI" in html
+    assert "CORPLENS ONE" in html
     assert "Acme Global" in html

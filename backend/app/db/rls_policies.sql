@@ -1,4 +1,4 @@
--- CorpLens AI v3.1 — PostgreSQL Row Level Security (RLS) Enforcement Script
+-- CorpLens One v1.0.0 — PostgreSQL Row Level Security (RLS) Enforcement Script
 
 -- Enable RLS on core tables
 ALTER TABLE companies ENABLE ROW LEVEL SECURITY;

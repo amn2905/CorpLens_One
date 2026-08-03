@@ -1,6 +1,6 @@
-# 🗄️ CorpLens AI — Database Design & Schema Specification
+# 🗄️ CorpLens One — Database Design & Schema Specification
 
-> **Version**: 3.1 Enterprise Edition  
+> **Version**: 1.0.0  
 > **Database Engine**: PostgreSQL 16 (Relational) & Neo4j 5.18 (Graph)  
 
 ---

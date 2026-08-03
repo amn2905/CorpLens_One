@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FolderOpen, 
   Plus, 
@@ -10,51 +10,14 @@ import {
   CheckCircle2,
   AlertCircle
 } from 'lucide-react';
-
-interface CaseItem {
-  id: string;
-  title: string;
-  target_company: string;
-  assignee: string;
-  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED';
-  created_at: string;
-  evidence_count: number;
-}
+import { api, CaseItem } from '../services/api';
 
 export const CaseManagementPage: React.FC = () => {
-  const [cases, setCases] = useState<CaseItem[]>([
-    {
-      id: 'CASE-101',
-      title: 'OFAC Sanction Fuzzy Match Adjudication (84% Confidence)',
-      target_company: 'Nexus Commercial Trading LLC',
-      assignee: 'Alex Sterling',
-      priority: 'CRITICAL',
-      status: 'OPEN',
-      created_at: '2026-07-27',
-      evidence_count: 5
-    },
-    {
-      id: 'CASE-102',
-      title: 'CVE-2024-21626 Container Breakout Patch Verification',
-      target_company: 'Nexus Dynamics Defense',
-      assignee: 'Sarah Chen',
-      priority: 'HIGH',
-      status: 'IN_PROGRESS',
-      created_at: '2026-07-26',
-      evidence_count: 3
-    },
-    {
-      id: 'CASE-103',
-      title: 'TLS Certificate Expiry SLA Alert Audit',
-      target_company: 'Acme Global Financial Group',
-      assignee: 'Marcus Vance',
-      priority: 'MEDIUM',
-      status: 'RESOLVED',
-      created_at: '2026-07-25',
-      evidence_count: 4
-    }
-  ]);
+  const [cases, setCases] = useState<CaseItem[]>([]);
+
+  useEffect(() => {
+    setCases(api.getCases());
+  }, []);
 
   const columns: { key: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED'; label: string; dotColor: string }[] = [
     { key: 'OPEN', label: 'Open Investigations', dotColor: 'bg-rose-500' },
@@ -81,7 +44,23 @@ export const CaseManagementPage: React.FC = () => {
           </p>
         </div>
 
-        <button className="clay-button-primary px-5 py-2.5 text-xs flex items-center gap-2 font-bold shrink-0">
+        <button 
+          onClick={() => {
+            const newCase: CaseItem = {
+              id: `CASE-${Math.floor(100 + Math.random() * 900)}`,
+              title: 'Manual Analyst Forensic Investigation Case',
+              target_company: 'Acme Global Financial Group',
+              assignee: 'Alex Sterling',
+              priority: 'HIGH',
+              status: 'OPEN',
+              created_at: new Date().toISOString().split('T')[0],
+              evidence_count: 3
+            };
+            const updated = api.addCase(newCase);
+            setCases([...updated]);
+          }}
+          className="clay-button-primary px-5 py-2.5 text-xs flex items-center gap-2 font-bold shrink-0"
+        >
           <Plus className="w-4 h-4 stroke-[3]" />
           + Initiate Investigation Case
         </button>

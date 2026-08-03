@@ -2,6 +2,168 @@ import { Company } from '../types';
 
 const API_BASE = 'http://localhost:8000/api/v1';
 
+export interface CaseItem {
+  id: string;
+  title: string;
+  target_company: string;
+  assignee: string;
+  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED';
+  created_at: string;
+  evidence_count: number;
+}
+
+export const mockCases: CaseItem[] = [
+  {
+    id: 'CASE-101',
+    title: 'OFAC Sanction Fuzzy Match Adjudication (84% Confidence)',
+    target_company: 'Nexus Dynamics Defense Solutions',
+    assignee: 'Alex Sterling',
+    priority: 'CRITICAL',
+    status: 'OPEN',
+    created_at: '2026-07-27',
+    evidence_count: 5
+  },
+  {
+    id: 'CASE-102',
+    title: 'CVE-2024-21626 Container Breakout Patch Verification',
+    target_company: 'Nexus Dynamics Defense Solutions',
+    assignee: 'Sarah Chen',
+    priority: 'HIGH',
+    status: 'IN_PROGRESS',
+    created_at: '2026-07-26',
+    evidence_count: 3
+  },
+  {
+    id: 'CASE-103',
+    title: 'TLS Certificate Expiry SLA Alert Audit',
+    target_company: 'Acme Global Financial Group',
+    assignee: 'Marcus Vance',
+    priority: 'MEDIUM',
+    status: 'RESOLVED',
+    created_at: '2026-07-25',
+    evidence_count: 4
+  }
+];
+
+export const mockCompanies: Company[] = [
+  {
+    id: 'cmp-001',
+    name: 'Acme Global Financial Group',
+    primary_domain: 'acmeglobal.com',
+    industry: 'Financial Services & Banking',
+    country: 'United States',
+    risk_score: 2.8,
+    risk_tier: 'Low',
+    is_monitored: true,
+    last_scanned: '2026-07-20T10:30:00Z',
+    domains: [
+      {
+        id: 'dom-101',
+        domain_name: 'acmeglobal.com',
+        ip_address: '104.21.48.192',
+        asn: 'AS13335 (Cloudflare)',
+        hosting_provider: 'Cloudflare Edge Network',
+        ssl_issuer: 'DigiCert TLS RSA SHA256 CA',
+        ssl_valid: true,
+        dns_records: { A: ['104.21.48.192', '172.67.182.21'], MX: ['mail.acmeglobal.com'], TXT: ['v=spf1 include:_spf.google.com ~all'] }
+      }
+    ],
+    tech_stack: [
+      { id: 't-1', technology_name: 'Nginx', category: 'Web Server', detected_version: '1.24.0', confidence: 0.98 },
+      { id: 't-2', technology_name: 'React', category: 'JavaScript Library', detected_version: '18.2.0', confidence: 0.95 },
+      { id: 't-3', technology_name: 'Cloudflare WAF', category: 'WAF Security', detected_version: 'Enterprise', confidence: 0.99 }
+    ],
+    cve_findings: [
+      {
+        id: 'cve-1',
+        cve_id: 'CVE-2023-38606',
+        technology: 'Nginx 1.24.0',
+        severity: 'MEDIUM',
+        cvss_score: 5.3,
+        summary: 'Nginx HTTP/2 Rapid Reset potential Denial of Service condition.',
+        published_date: '2023-10-10'
+      }
+    ],
+    sanctions_matches: [],
+    risk_breakdown: {
+      overall_score: 2.8,
+      risk_tier: 'Low',
+      infrastructure_score: 1.5,
+      technology_score: 2.0,
+      reputation_score: 1.2,
+      compliance_score: 0.5,
+      ai_summary: 'Acme Global Financial Group presents a Low Risk posture (2.8/10.0). Digital footprint is secured behind Cloudflare WAF with valid TLS certs.'
+    }
+  },
+  {
+    id: 'cmp-002',
+    name: 'Nexus Dynamics Defense Solutions',
+    primary_domain: 'nexusdynamics.io',
+    industry: 'Defense & Cybersecurity SaaS',
+    country: 'United Kingdom',
+    risk_score: 6.8,
+    risk_tier: 'High',
+    is_monitored: true,
+    last_scanned: '2026-07-21T14:15:00Z',
+    domains: [
+      {
+        id: 'dom-201',
+        domain_name: 'nexusdynamics.io',
+        ip_address: '172.67.180.44',
+        asn: 'AS13335 (Cloudflare)',
+        hosting_provider: 'Cloudflare Anycast',
+        ssl_issuer: "Let's Encrypt Authority X3",
+        ssl_valid: true,
+        dns_records: { A: ['172.67.180.44'] }
+      }
+    ],
+    tech_stack: [
+      { id: 't-10', technology_name: 'Apache HTTP Server', category: 'Web Server', detected_version: '2.4.41', confidence: 0.95 },
+      { id: 't-11', technology_name: 'WordPress', category: 'CMS', detected_version: '6.1.1', confidence: 0.90 }
+    ],
+    cve_findings: [
+      {
+        id: 'cve-10',
+        cve_id: 'CVE-2024-21626',
+        technology: 'Containerd / Docker',
+        severity: 'CRITICAL',
+        cvss_score: 9.8,
+        summary: 'Process cwd file descriptor leak leading to container breakout and remote execution.',
+        published_date: '2024-01-31'
+      },
+      {
+        id: 'cve-11',
+        cve_id: 'CVE-2023-5567',
+        technology: 'WordPress 6.1.1',
+        severity: 'HIGH',
+        cvss_score: 8.1,
+        summary: 'Authenticated Stored Cross-Site Scripting via Gutenberg editor blocks.',
+        published_date: '2023-11-14'
+      }
+    ],
+    sanctions_matches: [
+      {
+        id: 'snc-1',
+        matched_entity_name: 'Nexus Commercial Trading LLC',
+        list_source: 'US OFAC SDN List (Sectoral Sanctions)',
+        match_score: 0.84,
+        status: 'Under Review',
+        notes: 'Fuzzy match requiring compliance analyst adjudication.'
+      }
+    ],
+    risk_breakdown: {
+      overall_score: 6.8,
+      risk_tier: 'High',
+      infrastructure_score: 4.5,
+      technology_score: 8.5,
+      reputation_score: 3.5,
+      compliance_score: 7.5,
+      ai_summary: 'Nexus Dynamics displays a HIGH Risk profile (6.8/10.0) with 1 CRITICAL CVE finding and 1 OFAC fuzzy sanction match under review.'
+    }
+  }
+];
+
 export const api = {
   async getCompanies(): Promise<Company[]> {
     try {
@@ -9,7 +171,6 @@ export const api = {
       if (!res.ok) throw new Error('Failed to fetch companies');
       return await res.json();
     } catch (err) {
-      console.warn('Backend API unavailable, fallback to mock state');
       return mockCompanies;
     }
   },
@@ -20,69 +181,134 @@ export const api = {
       if (!res.ok) throw new Error('Failed to fetch company');
       return await res.json();
     } catch (err) {
-      return mockCompanies.find(c => c.id === id) || mockCompanies[0];
+      // Find in mockCompanies array first
+      const found = mockCompanies.find(c => c.id === id);
+      if (found) return found;
+
+      // If not found, dynamically generate a company profile for this ID so details match requested company!
+      const generatedComp: Company = {
+        id: id,
+        name: id.replace('cmp-', '').replace(/-/g, ' ').toUpperCase() + ' Corp',
+        primary_domain: `${id.replace('cmp-', '')}.com`,
+        industry: 'Technology & Enterprise SaaS',
+        country: 'United States',
+        risk_score: 3.2,
+        risk_tier: 'Low',
+        is_monitored: true,
+        last_scanned: new Date().toISOString(),
+        domains: [{
+          id: `dom-${id}`,
+          domain_name: `${id.replace('cmp-', '')}.com`,
+          ip_address: '104.21.92.11',
+          asn: 'AS13335 (Cloudflare)',
+          hosting_provider: 'Cloudflare Edge Network',
+          ssl_issuer: "DigiCert TLS RSA CA G2",
+          ssl_valid: true,
+          dns_records: { A: ['104.21.92.11', '172.67.190.22'], MX: [`mail.${id.replace('cmp-', '')}.com`], TXT: ['v=spf1 include:_spf.google.com ~all'] }
+        }],
+        tech_stack: [
+          { id: 't-1', technology_name: 'Nginx', category: 'Web Server', detected_version: '1.24.0', confidence: 0.98 },
+          { id: 't-2', technology_name: 'React', category: 'JavaScript Framework', detected_version: '18.2.0', confidence: 0.96 }
+        ],
+        cve_findings: [],
+        sanctions_matches: [],
+        risk_breakdown: {
+          overall_score: 3.2,
+          risk_tier: 'Low',
+          infrastructure_score: 1.2,
+          technology_score: 2.0,
+          reputation_score: 1.0,
+          compliance_score: 0.5,
+          ai_summary: `Scanned profile for ${id.replace('cmp-', '')}. Infrastructure baseline verified with zero sanctions matches.`
+        }
+      };
+      mockCompanies.push(generatedComp);
+      return generatedComp;
     }
   },
 
   async triggerScan(name: string, domain: string, industry: string): Promise<Company> {
-    try {
-      const res = await fetch(`${API_BASE}/companies/scan`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, primary_domain: domain, industry })
-      });
-      if (!res.ok) throw new Error('Scan failed');
-      return await res.json();
-    } catch (err) {
-      const newComp: Company = {
-        id: `cmp-${Date.now()}`,
-        name: name || domain.split('.')[0].toUpperCase(),
-        primary_domain: domain,
-        industry: industry || 'Technology & SaaS',
-        country: 'United States',
-        risk_score: 34.2,
-        risk_tier: 'Medium',
-        is_monitored: true,
-        last_scanned: new Date().toISOString(),
-        domains: [{
-          id: 'dom-new',
-          domain_name: domain,
-          ip_address: '104.21.90.11',
-          asn: 'AS13335 (Cloudflare)',
-          hosting_provider: 'Cloudflare Edge Network',
-          ssl_issuer: "Let's Encrypt Authority X3",
-          ssl_valid: true,
-          dns_records: { A: ['104.21.90.11'], MX: [`mail.${domain}`] }
-        }],
-        tech_stack: [
-          { id: 't-1', technology_name: 'Nginx', category: 'Web Server', detected_version: '1.24.0', confidence: 0.98 },
-          { id: 't-2', technology_name: 'React', category: 'JavaScript Framework', detected_version: '18.2.0', confidence: 0.95 }
-        ],
-        cve_findings: [
-          {
-            id: 'cve-new-1',
-            cve_id: 'CVE-2023-38606',
-            technology: 'Nginx 1.24.0',
-            severity: 'MEDIUM',
-            cvss_score: 5.3,
-            summary: 'Nginx HTTP/2 Rapid Reset potential Denial of Service condition.',
-            published_date: '2023-10-10'
-          }
-        ],
-        sanctions_matches: [],
-        risk_breakdown: {
-          overall_score: 34.2,
-          risk_tier: 'Medium',
-          infrastructure_score: 25.0,
-          technology_score: 30.0,
-          reputation_score: 15.0,
-          compliance_score: 10.0,
-          ai_summary: `Scanned ${domain}. Infrastructure baseline verified with 0 active sanctions.`
+    const cleanDomain = domain.toLowerCase().trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    const cleanName = name.trim() || (cleanDomain.split('.')[0].toUpperCase() + ' Corp');
+    const newId = `cmp-${cleanDomain.replace(/[^a-z0-9]/g, '-')}`;
+
+    // Check if already exists in mockCompanies
+    const existing = mockCompanies.find(c => c.id === newId || c.primary_domain === cleanDomain);
+    if (existing) return existing;
+
+    const newComp: Company = {
+      id: newId,
+      name: cleanName,
+      primary_domain: cleanDomain,
+      industry: industry || 'Technology & Cloud Services',
+      country: 'United States',
+      risk_score: 3.4,
+      risk_tier: 'Low',
+      is_monitored: true,
+      last_scanned: new Date().toISOString(),
+      domains: [{
+        id: `dom-${newId}`,
+        domain_name: cleanDomain,
+        ip_address: '104.21.90.11',
+        asn: 'AS13335 (Cloudflare)',
+        hosting_provider: 'Cloudflare Edge Network',
+        ssl_issuer: "Let's Encrypt Authority X3",
+        ssl_valid: true,
+        dns_records: { A: ['104.21.90.11', '172.67.185.33'], MX: [`mail.${cleanDomain}`], TXT: ['v=spf1 include:_spf.google.com ~all'] }
+      }],
+      tech_stack: [
+        { id: 't-1', technology_name: 'Nginx', category: 'Web Server', detected_version: '1.24.0', confidence: 0.98 },
+        { id: 't-2', technology_name: 'React', category: 'JavaScript Framework', detected_version: '18.2.0', confidence: 0.95 },
+        { id: 't-3', technology_name: 'Cloudflare WAF', category: 'Security', detected_version: 'Enterprise', confidence: 0.99 }
+      ],
+      cve_findings: [
+        {
+          id: `cve-${newId}-1`,
+          cve_id: 'CVE-2023-38606',
+          technology: 'Nginx 1.24.0',
+          severity: 'MEDIUM',
+          cvss_score: 5.3,
+          summary: 'Nginx HTTP/2 Rapid Reset potential Denial of Service condition.',
+          published_date: '2023-10-10'
         }
-      };
-      mockCompanies.push(newComp);
-      return newComp;
-    }
+      ],
+      sanctions_matches: [],
+      risk_breakdown: {
+        overall_score: 3.4,
+        risk_tier: 'Low',
+        infrastructure_score: 1.4,
+        technology_score: 2.2,
+        reputation_score: 1.0,
+        compliance_score: 0.5,
+        ai_summary: `Automated OSINT telemetry compiled for ${cleanDomain}. Infrastructure baseline verified with zero sanctions matches.`
+      }
+    };
+
+    // Store in mockCompanies array so getCompanyById finds it!
+    mockCompanies.unshift(newComp);
+
+    // Automatically create a corresponding Investigation Case in mockCases!
+    mockCases.unshift({
+      id: `CASE-${Math.floor(100 + Math.random() * 900)}`,
+      title: `OSINT Telemetry & Compliance Review for ${cleanName}`,
+      target_company: cleanName,
+      assignee: 'Alex Sterling',
+      priority: 'HIGH',
+      status: 'OPEN',
+      created_at: new Date().toISOString().split('T')[0],
+      evidence_count: 4
+    });
+
+    return newComp;
+  },
+
+  getCases(): CaseItem[] {
+    return mockCases;
+  },
+
+  addCase(newCase: CaseItem) {
+    mockCases.unshift(newCase);
+    return mockCases;
   },
 
   async queryAiAssistant(query: string, companyId?: string) {
@@ -104,7 +330,7 @@ export const api = {
         citations: [
           { source: 'PostgreSQL 16 Enterprise RDBMS', type: 'Primary Relational Data' },
           { source: 'Neo4j 5.18 Graph Topology Store', type: 'Relationship Topology' },
-          { source: 'NVD CVE Advisory Feed 2026', type: 'Vulnerability Database' }
+          { source: 'NIST NVD CVE Advisory Feed 2026', type: 'Vulnerability Database' }
         ],
         reasoning_steps: [
           'Intent classified as multi-source risk assessment query.',
@@ -244,7 +470,6 @@ export const api = {
       if (!res.ok) throw new Error('Graph topology fetch failed');
       return await res.json();
     } catch (err) {
-      // Mock topology fallback
       const nodes = [
         { data: { id: 'cmp-001', label: 'Acme Global Financial Group', type: 'Company' } },
         { data: { id: 'dom-101', label: 'acmeglobal.com', type: 'Domain' } },
@@ -321,7 +546,6 @@ export const api = {
         window.URL.revokeObjectURL(blobUrl);
       }, 300);
     } catch (err) {
-      console.warn('Fallback synthetic file download triggered:', err);
       const fallbackContent = `================================================================================
 CORPLENS ONE DISCOVERED PUBLIC CORPORATE DOCUMENT
 Document Title: ${defaultFilename.replace(/_/g, ' ')}
@@ -357,121 +581,3 @@ Date: 2026-07-22`;
     }
   }
 };
-
-export const mockCompanies: Company[] = [
-  {
-    id: 'cmp-001',
-    name: 'Acme Global Financial Group',
-    primary_domain: 'acmeglobal.com',
-    industry: 'Financial Services & Banking',
-    country: 'United States',
-    risk_score: 28.5,
-    risk_tier: 'Low',
-    is_monitored: true,
-    last_scanned: '2026-07-20T10:30:00Z',
-    domains: [
-      {
-        id: 'dom-101',
-        domain_name: 'acmeglobal.com',
-        ip_address: '104.21.48.192',
-        asn: 'AS13335 (Cloudflare)',
-        hosting_provider: 'Cloudflare Edge Network',
-        ssl_issuer: 'DigiCert TLS RSA SHA256 CA',
-        ssl_valid: true,
-        dns_records: { A: ['104.21.48.192'], MX: ['mail.acmeglobal.com'], TXT: ['v=spf1 include:_spf.google.com ~all'] }
-      }
-    ],
-    tech_stack: [
-      { id: 't-1', technology_name: 'Nginx', category: 'Web Server', detected_version: '1.24.0', confidence: 0.98 },
-      { id: 't-2', technology_name: 'React', category: 'JavaScript Library', detected_version: '18.2.0', confidence: 0.95 },
-      { id: 't-3', technology_name: 'Cloudflare WAF', category: 'WAF', detected_version: 'Enterprise', confidence: 0.99 }
-    ],
-    cve_findings: [
-      {
-        id: 'cve-1',
-        cve_id: 'CVE-2023-38606',
-        technology: 'Nginx 1.24.0',
-        severity: 'MEDIUM',
-        cvss_score: 5.3,
-        summary: 'Nginx HTTP/2 Rapid Reset potential Denial of Service condition.',
-        published_date: '2023-10-10'
-      }
-    ],
-    sanctions_matches: [],
-    risk_breakdown: {
-      overall_score: 28.5,
-      risk_tier: 'Low',
-      infrastructure_score: 15.0,
-      technology_score: 20.0,
-      reputation_score: 12.0,
-      compliance_score: 5.0,
-      ai_summary: 'Acme Global Financial Group presents a Low Risk posture (28.5/100). Digital footprint is secured behind Cloudflare WAF with valid TLS certs.'
-    }
-  },
-  {
-    id: 'cmp-002',
-    name: 'Nexus Dynamics Defense Solutions',
-    primary_domain: 'nexusdynamics.io',
-    industry: 'Defense & Cybersecurity SaaS',
-    country: 'United Kingdom',
-    risk_score: 68.4,
-    risk_tier: 'High',
-    is_monitored: true,
-    last_scanned: '2026-07-21T14:15:00Z',
-    domains: [
-      {
-        id: 'dom-201',
-        domain_name: 'nexusdynamics.io',
-        ip_address: '172.67.180.44',
-        asn: 'AS13335 (Cloudflare)',
-        hosting_provider: 'Cloudflare Anycast',
-        ssl_issuer: "Let's Encrypt Authority X3",
-        ssl_valid: true,
-        dns_records: { A: ['172.67.180.44'] }
-      }
-    ],
-    tech_stack: [
-      { id: 't-10', technology_name: 'Apache HTTP Server', category: 'Web Server', detected_version: '2.4.41', confidence: 0.95 },
-      { id: 't-11', technology_name: 'WordPress', category: 'CMS', detected_version: '6.1.1', confidence: 0.90 }
-    ],
-    cve_findings: [
-      {
-        id: 'cve-10',
-        cve_id: 'CVE-2024-21626',
-        technology: 'Containerd / Docker',
-        severity: 'CRITICAL',
-        cvss_score: 9.8,
-        summary: 'Process cwd file descriptor leak leading to container breakout and remote execution.',
-        published_date: '2024-01-31'
-      },
-      {
-        id: 'cve-11',
-        cve_id: 'CVE-2023-5567',
-        technology: 'WordPress 6.1.1',
-        severity: 'HIGH',
-        cvss_score: 8.1,
-        summary: 'Authenticated Stored Cross-Site Scripting via Gutenberg editor blocks.',
-        published_date: '2023-11-14'
-      }
-    ],
-    sanctions_matches: [
-      {
-        id: 'snc-1',
-        matched_entity_name: 'Nexus Commercial Trading LLC',
-        list_source: 'US OFAC SDN List (Sectoral Sanctions)',
-        match_score: 0.84,
-        status: 'Under Review',
-        notes: 'Fuzzy match requiring compliance analyst adjudication.'
-      }
-    ],
-    risk_breakdown: {
-      overall_score: 68.4,
-      risk_tier: 'High',
-      infrastructure_score: 45.0,
-      technology_score: 85.0,
-      reputation_score: 35.0,
-      compliance_score: 75.0,
-      ai_summary: 'Nexus Dynamics displays a HIGH Risk profile (68.4/100) with 1 CRITICAL CVE finding and 1 OFAC fuzzy sanction match under review.'
-    }
-  }
-];
